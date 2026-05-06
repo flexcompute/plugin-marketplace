@@ -1,0 +1,13 @@
+{
+  "name": "flexcompute",
+  "owner": {
+    "name": "Flexcompute",
+    "email": "support@flexcompute.com"
+  },
+  "plugins": [
+    {
+      "name": "tidy3d",
+      "source": "./claude-code/tidy3d"
+    }
+  ]
+}

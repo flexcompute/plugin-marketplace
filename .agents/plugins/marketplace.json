@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    {
+      "name": "tidy3d",
+      "source": "./codex/tidy3d"
+    }
+  ]
+}
