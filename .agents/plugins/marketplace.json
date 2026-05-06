@@ -9,6 +9,18 @@
   },
   "plugins": [
     {
+      "name": "photonforge",
+      "source": {
+        "source": "local",
+        "path": "./codex/photonforge"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "tidy3d",
       "source": {
         "source": "local",

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "tidy3d": {
+      "command": "uvx",
+      "args": [
+        "tidy3d-mcp"
+      ]
+    }
+  }
+}

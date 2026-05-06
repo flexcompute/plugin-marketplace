@@ -6,6 +6,10 @@
   },
   "plugins": [
     {
+      "name": "photonforge",
+      "source": "./claude-code/photonforge"
+    },
+    {
       "name": "tidy3d",
       "source": "./claude-code/tidy3d"
     }
