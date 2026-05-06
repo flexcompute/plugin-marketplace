@@ -1,8 +1,24 @@
 {
+  "name": "flexcompute",
+  "owner": {
+    "name": "Flexcompute",
+    "email": "support@flexcompute.com"
+  },
+  "interface": {
+    "displayName": "Flexcompute Plugins"
+  },
   "plugins": [
     {
       "name": "tidy3d",
-      "source": "./codex/tidy3d"
+      "source": {
+        "source": "local",
+        "path": "./codex/tidy3d"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
     }
   ]
 }
