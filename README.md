@@ -1,12 +1,16 @@
 # Flexcompute Plugins
 
-Install Flexcompute plugins for AI coding assistants.
-Use the section for your assistant below.
+Install Flexcompute plugins for AI coding assistants. Use the section for your assistant below.
 
 ## Available Plugins
 
-- Tidy3D: AI-assisted Tidy3D documentation search, API lookup, and simulation-focused help through `tidy3d-mcp`. Available for Claude Code, Codex, and GitHub Copilot CLI.
-- PhotonForge: AI guidance for PhotonForge PCells, layout routing, LVS, and MCP-backed documentation lookup. Available for Claude Code, Codex, and GitHub Copilot CLI.
+### Tidy3D
+
+Tidy3D adds `tidy3d-mcp` and the FlexAgent skill to your assistant. The MCP server provides current Flexcompute documentation search and document fetch tools. The skill guides agents through Tidy3D simulation creation, API lookup, troubleshooting, geometry import, result analysis, physics guardrails, and cost-control checks before remote simulation runs.
+
+### PhotonForge
+
+PhotonForge adds skills for parametric component authoring and layout verification. The skills guide agents through PCells, technologies, hierarchy, ports, schema-aware component definitions, routing, physical connectivity, virtual connections, LVS-style checks, and layout-overlap risk review. PhotonForge also uses MCP-backed Flexcompute documentation lookup when available.
 
 ## Claude Code
 
