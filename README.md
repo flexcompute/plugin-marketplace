@@ -12,6 +12,16 @@ Tidy3D adds `tidy3d-mcp` and the [FlexAgent](https://www.flexcompute.com/resourc
 
 PhotonForge adds skills for parametric component authoring and layout verification. The skills guide agents through PCells, technologies, hierarchy, ports, schema-aware component definitions, routing, physical connectivity, virtual connections, LVS-style checks, and layout-overlap risk review. PhotonForge also uses MCP-backed Flexcompute documentation lookup.
 
+## Prerequisites
+
+The plugins start `tidy3d-mcp` with `uvx`. Install [`uv`](https://docs.astral.sh/uv/getting-started/installation/) so `uvx` is on your `PATH`:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+For Homebrew or Windows, see the [uv install docs](https://docs.astral.sh/uv/getting-started/installation/).
+
 ## Claude Code
 
 In Claude Code:
@@ -46,7 +56,3 @@ Install a plugin from its Copilot CLI plugin directory:
 copilot plugin install flexcompute/plugin-marketplace:copilot-cli/tidy3d
 copilot plugin install flexcompute/plugin-marketplace:copilot-cli/photonforge
 ```
-
-## Requirements
-
-The Tidy3D and PhotonForge plugins start `tidy3d-mcp` with `uvx`. Install `uv` if `uvx` is not available on your `PATH`.
