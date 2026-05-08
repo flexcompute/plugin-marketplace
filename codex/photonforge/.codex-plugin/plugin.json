@@ -1,7 +1,7 @@
 {
   "name": "photonforge",
   "version": "0.1.0",
-  "description": "PhotonForge layout, PCell, circuit-design, and MCP-backed documentation guidance for AI coding agents.",
+  "description": "PhotonForge PCell, layout, routing, and documentation guidance for AI coding agents.",
   "author": {
     "name": "Flexcompute",
     "email": "support@flexcompute.com",
@@ -21,8 +21,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "PhotonForge",
-    "shortDescription": "AI guidance for PhotonForge PCells, layout routing, LVS, and docs lookup.",
-    "longDescription": "Use PhotonForge through your AI coding agent for parametric component authoring, technology-aware layout construction, schematic-to-layout routing, and LVS-style verification workflows. Includes tidy3d-mcp for current MCP-backed Flexcompute documentation and API lookup.",
+    "shortDescription": "AI guidance for PhotonForge PCells, routing, LVS, and docs lookup.",
+    "longDescription": "Use PhotonForge through your AI coding agent for parametric component authoring, technology-aware layout construction, schematic-to-layout routing, and LVS-style verification. Includes tidy3d-mcp for current Flexcompute documentation and API lookup.",
     "developerName": "Flexcompute",
     "websiteURL": "https://www.flexcompute.com/",
     "defaultPrompt": [
