@@ -1,58 +1,117 @@
 # Flexcompute Plugins
 
-Install Flexcompute plugins for AI coding assistants. Use the section for your assistant below.
+[Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/) and [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/) for your AI coding assistant.
 
-## Available Plugins
+## Why This Exists
 
-### Tidy3D
+Instead of pasting docs, setup notes, [Tidy3D notebooks](https://github.com/flexcompute/tidy3d-notebooks), and simulation workflow context into every chat, install these plugins once. Your agent can retrieve semantically indexed Flexcompute guidance, including notebooks that capture real workflows, and use the right [Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/) or [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/) approach while it writes, debugs, or reviews code.
 
-Tidy3D adds `tidy3d-mcp` and the [FlexAgent](https://www.flexcompute.com/resources/ai-agent/) simulation skill to your assistant. The MCP server provides current Flexcompute documentation search and document fetch tools. The skill guides agents through Tidy3D simulation creation, API lookup, troubleshooting, geometry import, result analysis, physics guardrails, and cost-control checks before remote simulation runs.
+## Install
 
-### PhotonForge
+macOS or Linux:
 
-PhotonForge adds skills for parametric component authoring and layout verification. The skills guide agents through PCells, technologies, hierarchy, ports, schema-aware component definitions, routing, physical connectivity, virtual connections, LVS-style checks, and layout-overlap risk review. PhotonForge also uses MCP-backed Flexcompute documentation lookup.
+```bash
+curl -LsSf https://raw.githubusercontent.com/flexcompute/plugin-marketplace/main/install.sh | bash
+```
 
-## Prerequisites
+Windows PowerShell:
 
-The plugins start `tidy3d-mcp` with `uvx`. Install [`uv`](https://docs.astral.sh/uv/getting-started/installation/) so `uvx` is on your `PATH`:
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/flexcompute/plugin-marketplace/main/install.ps1 | iex"
+```
+
+The installer checks `uvx` and `tidy3d-mcp` first. If `uvx` is missing in an interactive terminal, it asks before running Astral's official [`uv`](https://docs.astral.sh/uv/) installer. When you pipe the installer from `curl`, pass `--install-uv` to opt in up front. It then asks which AI coding tool you use and sets up the plugins.
+
+In non-interactive terminals, pass `--client auto`, `--client codex`, `--client claude`, `--client copilot`, or `--client none`. In PowerShell, use `-Client` instead.
+
+## What You Can Ask
+
+| Goal | Example prompt |
+| --- | --- |
+| Build or debug Tidy3D simulations | `use FlexAgent to set up a Tidy3D silicon waveguide simulation` |
+| Use current Flexcompute docs | `look up the Tidy3D API for ModeSource` |
+| Author PhotonForge components | `create a parameterized MMI component` |
+| Review layout connectivity | `check this PhotonForge layout for port issues` |
+
+## Reference Links
+
+- [`uv` documentation](https://docs.astral.sh/uv/)
+- [Tidy3D documentation](https://docs.flexcompute.com/projects/tidy3d/en/latest/)
+- [Tidy3D notebooks](https://github.com/flexcompute/tidy3d-notebooks)
+- [PhotonForge documentation](https://docs.flexcompute.com/projects/photonforge/en/latest/)
+
+## Included Plugins
+
+This README is the current public catalog. Until a plugin needs longer examples, each plugin's installed skills and MCP tools are listed here.
+
+### `tidy3d`
+
+| Installed surface | Name | What it enables |
+| --- | --- | --- |
+| Skill | `flexagent` | Tidy3D simulation setup, API usage, troubleshooting, geometry import, result analysis, cost-aware workflow guidance, and script review. |
+| MCP server | `tidy3d` via `uvx tidy3d-mcp` | Flexcompute docs search and doc fetch tools. Host-specific tool names can vary, but the tools end in `search_flexcompute_docs` and `fetch_flexcompute_doc`. |
+
+### `photonforge`
+
+| Installed surface | Name | What it enables |
+| --- | --- | --- |
+| Skill | `photonforge-pcell-authoring` | PhotonForge PCell authoring, custom technologies, ports, hierarchy, schema-aware component definitions, and layout preview guidance. |
+| Skill | `photonforge-layout-verification` | Schematic-to-layout assembly, routing, physical and virtual connection checks, netlist inspection, LVS-style review, and overlap sanity checks. |
+| MCP server | `tidy3d` via `uvx tidy3d-mcp` | Flexcompute docs search and doc fetch tools for PhotonForge and related API guidance. Host-specific tool names can vary, but the tools end in `search_flexcompute_docs` and `fetch_flexcompute_doc`. |
+
+## Manual Install
+
+Use this path if you want to run the steps yourself. Install [`uv`](https://docs.astral.sh/uv/), then verify that the MCP server starts:
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
+uvx tidy3d-mcp --help
 ```
 
-For Homebrew or Windows, see the [uv install docs](https://docs.astral.sh/uv/getting-started/installation/).
+On Windows PowerShell:
 
-## Claude Code
-
-In Claude Code:
-
-```text
-/plugin marketplace add flexcompute/plugin-marketplace
-/plugin install tidy3d@flexcompute
-/plugin install photonforge@flexcompute
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+uvx tidy3d-mcp --help
 ```
 
-If Claude Code is already running, reload plugins after installation:
+<details>
+<summary>Claude Code</summary>
 
-```text
-/reload-plugins
+```bash
+claude plugin marketplace add flexcompute/plugin-marketplace
+claude plugin install tidy3d@flexcompute
+claude plugin install photonforge@flexcompute
 ```
 
-## Codex
+</details>
 
-Add this repository as a Codex plugin marketplace:
+<details>
+<summary>Codex</summary>
 
 ```bash
 codex plugin marketplace add flexcompute/plugin-marketplace
+codex plugin add tidy3d@flexcompute
+codex plugin add photonforge@flexcompute
 ```
 
-Then open Codex, run `/plugins`, choose the Flexcompute marketplace, and install Tidy3D or PhotonForge.
+</details>
 
-## GitHub Copilot CLI
-
-Install a plugin from its Copilot CLI plugin directory:
+<details>
+<summary>GitHub Copilot CLI</summary>
 
 ```bash
-copilot plugin install flexcompute/plugin-marketplace:copilot-cli/tidy3d
-copilot plugin install flexcompute/plugin-marketplace:copilot-cli/photonforge
+copilot plugin marketplace add flexcompute/plugin-marketplace
+copilot plugin install tidy3d@flexcompute
+copilot plugin install photonforge@flexcompute
 ```
+
+</details>
+
+## Troubleshooting
+
+If the plugins do not appear, restart or reload the AI coding tool first.
+
+If MCP tools do not start, run `uvx tidy3d-mcp --help`.
+
+If installation still fails, open an issue at https://github.com/flexcompute/plugin-marketplace/issues with your operating system, AI coding tool, install command, and terminal output.

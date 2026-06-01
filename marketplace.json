@@ -1,0 +1,21 @@
+{
+  "name": "flexcompute",
+  "owner": {
+    "name": "Flexcompute",
+    "email": "support@flexcompute.com"
+  },
+  "plugins": [
+    {
+      "name": "photonforge",
+      "description": "PhotonForge PCell, layout, routing, and documentation guidance for AI coding agents.",
+      "version": "0.1.0",
+      "source": "./copilot-cli/photonforge"
+    },
+    {
+      "name": "tidy3d",
+      "description": "Tidy3D simulation, API, and documentation guidance for AI coding agents.",
+      "version": "0.1.0",
+      "source": "./copilot-cli/tidy3d"
+    }
+  ]
+}
