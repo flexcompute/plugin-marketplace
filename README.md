@@ -98,6 +98,30 @@ codex plugin add photonforge@flexcompute
 </details>
 
 <details>
+<summary>VS Code Agent Plugins (Preview)</summary>
+
+Agent plugins are currently a VS Code preview feature. In VS Code user
+settings JSON, make sure plugin support is enabled and add the Flexcompute
+marketplace:
+
+```json
+{
+  "chat.plugins.enabled": true,
+  "chat.plugins.marketplaces": [
+    "flexcompute/plugin-marketplace"
+  ]
+}
+```
+
+If `chat.plugins.enabled` is locked, it is managed by your GitHub Copilot
+organization policy. Ask your administrator to enable agent plugins.
+
+Then open the Extensions view, search `@agentPlugins`, and install `tidy3d`
+and `photonforge`.
+
+</details>
+
+<details>
 <summary>GitHub Copilot CLI</summary>
 
 ```bash
