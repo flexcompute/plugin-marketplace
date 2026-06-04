@@ -3,7 +3,7 @@ param(
     [ValidateSet("all", "tidy3d", "photonforge")]
     [string]$Plugin = "all",
 
-    [ValidateSet("prompt", "auto", "codex", "claude", "copilot", "none")]
+    [ValidateSet("prompt", "auto", "codex", "claude", "copilot", "cursor", "none")]
     [string]$Client = "prompt",
 
     [switch]$InstallUv
@@ -138,7 +138,7 @@ function Select-ClientMode {
     }
 
     if (-not [Environment]::UserInteractive) {
-        Stop-Bootstrap "no interactive terminal available; pass -Client auto, -Client codex, -Client claude, -Client copilot, or -Client none"
+        Stop-Bootstrap "no interactive terminal available; pass -Client auto, -Client codex, -Client claude, -Client copilot, -Client cursor, or -Client none"
     }
 
     Write-Section "Choose your AI coding tool"
@@ -147,13 +147,14 @@ function Select-ClientMode {
     [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "&Codex", "Configure Codex."))
     [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "Claude &Code", "Configure Claude Code."))
     [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "GitHub &Copilot CLI", "Configure GitHub Copilot CLI."))
+    [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "C&ursor", "Show Cursor plugin installation command."))
     [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "&Skip client setup", "Only check uvx and tidy3d-mcp."))
 
     $selection = $Host.UI.PromptForChoice("AI coding tool", "Install Flexcompute plugins for:", $choices, 0)
     if ($selection -lt 0) {
-        Stop-Bootstrap "no selection made; pass -Client auto, -Client codex, -Client claude, -Client copilot, or -Client none"
+        Stop-Bootstrap "no selection made; pass -Client auto, -Client codex, -Client claude, -Client copilot, -Client cursor, or -Client none"
     }
-    $script:Client = @("auto", "codex", "claude", "copilot", "none")[$selection]
+    $script:Client = @("auto", "codex", "claude", "copilot", "cursor", "none")[$selection]
     Write-Ok "selected $($choices[$selection].Label.Replace('&', ''))"
 }
 
@@ -421,6 +422,34 @@ function Install-Copilot {
     }
 }
 
+function Get-CursorAddPluginSource {
+    if ($MarketplaceSource -match '^[A-Za-z][A-Za-z0-9+.-]*://') {
+        return $MarketplaceSource
+    }
+    if ($MarketplaceSource -match '^[^/\\]+@[^/\\]+:') {
+        return $MarketplaceSource
+    }
+    if ($MarketplaceSource -match '^(/|\.{1,2}/|[A-Za-z]:[\\/])') {
+        return $MarketplaceSource
+    }
+    if ($MarketplaceSource -match '^[^/:@\\]+/[^/:@\\]+$') {
+        return "https://github.com/$MarketplaceSource"
+    }
+    return $MarketplaceSource
+}
+
+function Install-Cursor {
+    Write-Section "Configuring Cursor"
+    $source = Get-CursorAddPluginSource
+    Write-Host @"
+Cursor installs plugins from inside Cursor Agent chat. Open Cursor and run:
+
+  /add-plugin $source
+
+Then select or enable these plugins when Cursor prompts: $($SelectedPlugins -join ' ').
+"@
+}
+
 function Configure-Clients {
     Write-Section "Configuring AI coding tools"
     switch ($Client) {
@@ -436,10 +465,14 @@ function Configure-Clients {
         "copilot" {
             Install-Copilot
         }
+        "cursor" {
+            Install-Cursor
+        }
         default {
             Install-Codex
             Install-Claude
             Install-Copilot
+            Install-Cursor
         }
     }
 }
@@ -454,6 +487,8 @@ Claude Code can also reload in-session with:
   /reload-plugins
 
 Codex users can run /plugins in a new session to confirm the installed plugins.
+
+Cursor users can rerun /add-plugin in Agent chat after updates.
 "@
 }
 

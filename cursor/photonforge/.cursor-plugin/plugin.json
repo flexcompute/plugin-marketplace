@@ -1,0 +1,23 @@
+{
+  "name": "photonforge",
+  "displayName": "PhotonForge",
+  "version": "0.1.0",
+  "description": "PhotonForge PCell, layout, routing, and documentation guidance for AI coding agents.",
+  "author": {
+    "name": "Flexcompute",
+    "email": "support@flexcompute.com"
+  },
+  "homepage": "https://docs.flexcompute.com/projects/photonforge/",
+  "keywords": [
+    "photonforge",
+    "photonics",
+    "layout",
+    "pcell",
+    "lvs",
+    "routing",
+    "tidy3d",
+    "mcp"
+  ],
+  "mcpServers": "mcp.json",
+  "skills": "skills"
+}

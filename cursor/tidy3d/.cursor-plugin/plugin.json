@@ -1,0 +1,21 @@
+{
+  "name": "tidy3d",
+  "displayName": "Tidy3D",
+  "version": "0.1.0",
+  "description": "Tidy3D simulation, API, and documentation guidance for AI coding agents.",
+  "author": {
+    "name": "Flexcompute",
+    "email": "support@flexcompute.com"
+  },
+  "homepage": "https://docs.flexcompute.com/projects/tidy3d/",
+  "repository": "https://github.com/flexcompute/tidy3d",
+  "keywords": [
+    "tidy3d",
+    "photonics",
+    "simulation",
+    "mcp",
+    "documentation"
+  ],
+  "mcpServers": "mcp.json",
+  "skills": "skills"
+}

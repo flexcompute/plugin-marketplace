@@ -1,0 +1,23 @@
+{
+  "name": "flexcompute",
+  "owner": {
+    "name": "Flexcompute",
+    "email": "support@flexcompute.com"
+  },
+  "metadata": {
+    "description": "Flexcompute Cursor plugin marketplace",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "photonforge",
+      "source": "./cursor/photonforge",
+      "description": "PhotonForge PCell, layout, routing, and documentation guidance for AI coding agents."
+    },
+    {
+      "name": "tidy3d",
+      "source": "./cursor/tidy3d",
+      "description": "Tidy3D simulation, API, and documentation guidance for AI coding agents."
+    }
+  ]
+}

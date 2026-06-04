@@ -22,7 +22,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/fle
 
 The installer checks `uvx` and `tidy3d-mcp` first. If `uvx` is missing in an interactive terminal, it asks before running Astral's official [`uv`](https://docs.astral.sh/uv/) installer. When you pipe the installer from `curl`, pass `--install-uv` to opt in up front. It then asks which AI coding tool you use and sets up the plugins.
 
-In non-interactive terminals, pass `--client auto`, `--client codex`, `--client claude`, `--client copilot`, or `--client none`. In PowerShell, use `-Client` instead.
+In non-interactive terminals, pass `--client auto`, `--client codex`, `--client claude`, `--client copilot`, `--client cursor`, or `--client none`. In PowerShell, use `-Client` instead.
 
 ## What You Can Ask
 
@@ -94,6 +94,19 @@ codex plugin marketplace add flexcompute/plugin-marketplace
 codex plugin add tidy3d@flexcompute
 codex plugin add photonforge@flexcompute
 ```
+
+</details>
+
+<details>
+<summary>Cursor</summary>
+
+Open Cursor Agent chat and run:
+
+```text
+/add-plugin https://github.com/flexcompute/plugin-marketplace
+```
+
+Then select or enable `tidy3d` and `photonforge` when Cursor prompts.
 
 </details>
 

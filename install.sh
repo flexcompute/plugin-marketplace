@@ -17,7 +17,7 @@ Usage:
 
 Options:
   --plugin all|tidy3d|photonforge  Plugin set to install. Defaults to all.
-  --client prompt|auto|codex|claude|copilot|none
+  --client prompt|auto|codex|claude|copilot|cursor|none
                                    Client to configure. Defaults to prompt.
   --install-uv                     Install uv without prompting if uvx is missing.
   -h, --help                       Show this help.
@@ -106,11 +106,11 @@ parse_args() {
       --client)
         [[ $# -ge 2 ]] || die "--client requires a value"
         case "$2" in
-          prompt|auto|codex|claude|copilot|none)
+          prompt|auto|codex|claude|copilot|cursor|none)
             CLIENT_MODE="$2"
             ;;
           *)
-            die "unknown client '$2'; expected prompt, auto, codex, claude, copilot, or none"
+            die "unknown client '$2'; expected prompt, auto, codex, claude, copilot, cursor, or none"
             ;;
         esac
         shift 2
@@ -234,7 +234,7 @@ select_client_mode() {
   fi
 
   if [[ ! -r /dev/tty || ! -w /dev/tty ]]; then
-    die "no interactive terminal available; pass --client auto, --client codex, --client claude, --client copilot, or --client none"
+    die "no interactive terminal available; pass --client auto, --client codex, --client claude, --client copilot, --client cursor, or --client none"
   fi
 
   section "Choose your AI coding tool"
@@ -245,6 +245,7 @@ select_client_mode() {
     "Codex" \
     "Claude Code" \
     "GitHub Copilot CLI" \
+    "Cursor" \
     "Skip client setup"; do
     case "$REPLY" in
       1)
@@ -264,16 +265,20 @@ select_client_mode() {
         break
         ;;
       5)
+        CLIENT_MODE="cursor"
+        break
+        ;;
+      6)
         CLIENT_MODE="none"
         break
         ;;
       *)
-        printf 'Please enter 1, 2, 3, 4, or 5.\n' > /dev/tty
+        printf 'Please enter 1, 2, 3, 4, 5, or 6.\n' > /dev/tty
         ;;
     esac
   done < /dev/tty
   if [[ "$CLIENT_MODE" == "prompt" ]]; then
-    die "no selection made; pass --client auto, --client codex, --client claude, --client copilot, or --client none"
+    die "no selection made; pass --client auto, --client codex, --client claude, --client copilot, --client cursor, or --client none"
   fi
   ok "selected ${choice}"
 }
@@ -471,6 +476,36 @@ install_copilot() {
   done
 }
 
+cursor_add_plugin_source() {
+  case "$MARKETPLACE_SOURCE" in
+    *://*|*@*:*|[A-Za-z]:/*|/*|./*|../*)
+      printf '%s\n' "$MARKETPLACE_SOURCE"
+      ;;
+    */*/*)
+      printf '%s\n' "$MARKETPLACE_SOURCE"
+      ;;
+    */*)
+      printf 'https://github.com/%s\n' "$MARKETPLACE_SOURCE"
+      ;;
+    *)
+      printf '%s\n' "$MARKETPLACE_SOURCE"
+      ;;
+  esac
+}
+
+install_cursor() {
+  section "Configuring Cursor"
+  local source
+  source="$(cursor_add_plugin_source)"
+  cat <<EOF
+Cursor installs plugins from inside Cursor Agent chat. Open Cursor and run:
+
+  /add-plugin ${source}
+
+Then select or enable these plugins when Cursor prompts: ${SELECTED_PLUGINS[*]}.
+EOF
+}
+
 configure_clients() {
   section "Configuring AI coding tools"
   case "$CLIENT_MODE" in
@@ -486,10 +521,14 @@ configure_clients() {
     copilot)
       install_copilot
       ;;
+    cursor)
+      install_cursor
+      ;;
     auto)
       install_codex
       install_claude
       install_copilot
+      install_cursor
       ;;
   esac
 }
@@ -504,6 +543,8 @@ Claude Code can also reload in-session with:
   /reload-plugins
 
 Codex users can run /plugins in a new session to confirm the installed plugins.
+
+Cursor users can rerun /add-plugin in Agent chat after updates.
 EOF
 }
 
