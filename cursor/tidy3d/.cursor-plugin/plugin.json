@@ -1,7 +1,7 @@
 {
   "name": "tidy3d",
   "displayName": "Tidy3D",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tidy3D simulation, API, and documentation guidance for AI coding agents.",
   "author": {
     "name": "Flexcompute",
