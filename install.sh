@@ -6,7 +6,7 @@ MARKETPLACE_NAME="flexcompute"
 
 CLIENT_MODE="prompt"
 INSTALL_UV=0
-SELECTED_PLUGINS=(tidy3d photonforge)
+SELECTED_PLUGINS=(tidy3d photonforge flex-rf)
 
 usage() {
   cat <<'EOF'
@@ -16,7 +16,8 @@ Usage:
   install.sh [options]
 
 Options:
-  --plugin all|tidy3d|photonforge  Plugin set to install. Defaults to all.
+  --plugin all|tidy3d|photonforge|flex-rf
+                                   Plugin set to install. Defaults to all.
   --client prompt|auto|codex|claude|copilot|cursor|none
                                    Client to configure. Defaults to prompt.
   --install-uv                     Install uv without prompting if uvx is missing.
@@ -84,13 +85,13 @@ confirm_yes_no() {
 set_plugin_selection() {
   case "$1" in
     all)
-      SELECTED_PLUGINS=(tidy3d photonforge)
+      SELECTED_PLUGINS=(tidy3d photonforge flex-rf)
       ;;
-    tidy3d|photonforge)
+    tidy3d|photonforge|flex-rf)
       SELECTED_PLUGINS=("$1")
       ;;
     *)
-      die "unknown plugin selection '$1'; expected all, tidy3d, or photonforge"
+      die "unknown plugin selection '$1'; expected all, tidy3d, photonforge, or flex-rf"
       ;;
   esac
 }

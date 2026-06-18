@@ -1,0 +1,22 @@
+{
+  "name": "flex-rf",
+  "displayName": "Flex RF",
+  "version": "0.1.0",
+  "description": "Flex RF and tidy3d.rf guidance for RF and microwave simulation workflows.",
+  "author": {
+    "name": "Flexcompute",
+    "email": "support@flexcompute.com"
+  },
+  "homepage": "https://docs.flexcompute.com/projects/flex-rf/",
+  "keywords": [
+    "flex-rf",
+    "rf",
+    "microwave",
+    "simulation",
+    "tidy3d",
+    "smatrix",
+    "mcp"
+  ],
+  "mcpServers": "mcp.json",
+  "skills": "skills"
+}

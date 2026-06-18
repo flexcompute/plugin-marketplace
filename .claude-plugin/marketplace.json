@@ -6,6 +6,10 @@
   },
   "plugins": [
     {
+      "name": "flex-rf",
+      "source": "./claude-code/flex-rf"
+    },
+    {
       "name": "photonforge",
       "source": "./claude-code/photonforge"
     },

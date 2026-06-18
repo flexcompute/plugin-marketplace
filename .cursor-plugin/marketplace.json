@@ -10,6 +10,11 @@
   },
   "plugins": [
     {
+      "name": "flex-rf",
+      "source": "./cursor/flex-rf",
+      "description": "Flex RF and tidy3d.rf guidance for RF and microwave simulation workflows."
+    },
+    {
       "name": "photonforge",
       "source": "./cursor/photonforge",
       "description": "PhotonForge PCell, layout, routing, and documentation guidance for AI coding agents."

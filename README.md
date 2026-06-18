@@ -1,10 +1,10 @@
 # Flexcompute Plugins
 
-[Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/) and [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/) for your AI coding assistant.
+[Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/), [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/), and [Flex RF](https://docs.flexcompute.com/projects/flex-rf/) for your AI coding assistant.
 
 ## Why This Exists
 
-Instead of pasting docs, setup notes, [Tidy3D notebooks](https://github.com/flexcompute/tidy3d-notebooks), and simulation workflow context into every chat, install these plugins once. Your agent can retrieve semantically indexed Flexcompute guidance, including notebooks that capture real workflows, and use the right [Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/) or [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/) approach while it writes, debugs, or reviews code.
+Instead of pasting docs, setup notes, [Tidy3D notebooks](https://github.com/flexcompute/tidy3d-notebooks), and simulation workflow context into every chat, install these plugins once. Your agent can retrieve semantically indexed Flexcompute guidance, including notebooks that capture real workflows, and use the right [Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/), [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/), or [Flex RF](https://docs.flexcompute.com/projects/flex-rf/) approach while it writes, debugs, or reviews code.
 
 ## Install
 
@@ -59,6 +59,13 @@ This README is the current public catalog. Until a plugin needs longer examples,
 | Skill | `photonforge-layout-verification` | Schematic-to-layout assembly, routing, physical and virtual connection checks, netlist inspection, LVS-style review, and overlap sanity checks. |
 | MCP server | `tidy3d` via `uvx tidy3d-mcp` | Flexcompute docs search and doc fetch tools for PhotonForge and related API guidance. Host-specific tool names can vary, but the tools end in `search_flexcompute_docs` and `fetch_flexcompute_doc`. |
 
+### `flex-rf`
+
+| Installed surface | Name | What it enables |
+| --- | --- | --- |
+| Skill | `flexagent` | Flex RF and microwave EM simulation setup: TerminalComponentModeler S-parameter sweeps, ModeSolver and ModeSimulation analysis, lumped and wave port selection, RF meshing, antenna and result analysis, cost-aware run discipline, and migration from legacy `tidy3d.rf`. |
+| MCP server | `tidy3d` via `uvx tidy3d-mcp` | Flexcompute docs search and doc fetch tools for Flex RF and related API guidance. Host-specific tool names can vary, but the tools end in `search_flexcompute_docs` and `fetch_flexcompute_doc`. |
+
 ## Manual Install
 
 Use this path if you want to run the steps yourself. Install [`uv`](https://docs.astral.sh/uv/), then verify that the MCP server starts:
@@ -82,6 +89,7 @@ uvx tidy3d-mcp --help
 claude plugin marketplace add flexcompute/plugin-marketplace
 claude plugin install tidy3d@flexcompute
 claude plugin install photonforge@flexcompute
+claude plugin install flex-rf@flexcompute
 ```
 
 </details>
@@ -93,6 +101,7 @@ claude plugin install photonforge@flexcompute
 codex plugin marketplace add flexcompute/plugin-marketplace
 codex plugin add tidy3d@flexcompute
 codex plugin add photonforge@flexcompute
+codex plugin add flex-rf@flexcompute
 ```
 
 </details>
@@ -106,7 +115,7 @@ Open Cursor Agent chat and run:
 /add-plugin https://github.com/flexcompute/plugin-marketplace
 ```
 
-Then select or enable `tidy3d` and `photonforge` when Cursor prompts.
+Then select or enable `tidy3d`, `photonforge`, and `flex-rf` when Cursor prompts.
 
 </details>
 
@@ -129,8 +138,8 @@ marketplace:
 If `chat.plugins.enabled` is locked, it is managed by your GitHub Copilot
 organization policy. Ask your administrator to enable agent plugins.
 
-Then open the Extensions view, search `@agentPlugins`, and install `tidy3d`
-and `photonforge`.
+Then open the Extensions view, search `@agentPlugins`, and install `tidy3d`,
+`photonforge`, and `flex-rf`.
 
 </details>
 
@@ -141,6 +150,7 @@ and `photonforge`.
 copilot plugin marketplace add flexcompute/plugin-marketplace
 copilot plugin install tidy3d@flexcompute
 copilot plugin install photonforge@flexcompute
+copilot plugin install flex-rf@flexcompute
 ```
 
 </details>

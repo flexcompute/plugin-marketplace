@@ -9,6 +9,18 @@
   },
   "plugins": [
     {
+      "name": "flex-rf",
+      "source": {
+        "source": "local",
+        "path": "./codex/flex-rf"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "photonforge",
       "source": {
         "source": "local",

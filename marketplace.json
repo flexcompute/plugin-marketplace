@@ -6,6 +6,12 @@
   },
   "plugins": [
     {
+      "name": "flex-rf",
+      "description": "Flex RF and tidy3d.rf guidance for RF and microwave simulation workflows.",
+      "version": "0.1.0",
+      "source": "./copilot-cli/flex-rf"
+    },
+    {
       "name": "photonforge",
       "description": "PhotonForge PCell, layout, routing, and documentation guidance for AI coding agents.",
       "version": "0.1.0",

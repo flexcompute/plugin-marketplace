@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet("all", "tidy3d", "photonforge")]
+    [ValidateSet("all", "tidy3d", "photonforge", "flex-rf")]
     [string]$Plugin = "all",
 
     [ValidateSet("prompt", "auto", "codex", "claude", "copilot", "cursor", "none")]
@@ -12,7 +12,7 @@ param(
 $ErrorActionPreference = "Stop"
 $MarketplaceSource = if ($env:FLEXCOMPUTE_MARKETPLACE_SOURCE) { $env:FLEXCOMPUTE_MARKETPLACE_SOURCE } else { "flexcompute/plugin-marketplace" }
 $MarketplaceName = "flexcompute"
-$SelectedPlugins = if ($Plugin -eq "all") { @("tidy3d", "photonforge") } else { @($Plugin) }
+$SelectedPlugins = if ($Plugin -eq "all") { @("tidy3d", "photonforge", "flex-rf") } else { @($Plugin) }
 $BootstrapHome = if ($env:HOME) { $env:HOME } else { $HOME }
 if (-not $env:UV_INSTALL_DIR) {
     $env:UV_INSTALL_DIR = Join-Path $BootstrapHome ".local\bin"
@@ -39,7 +39,7 @@ function Write-Warn {
 function Write-Intro {
     Write-Section "Flexcompute plugin setup"
     Write-Host @"
-This installs Tidy3D and PhotonForge for your AI coding tool.
+This installs Tidy3D, PhotonForge, and Flex RF for your AI coding tool.
 If uvx is missing, you will be asked before uv is installed.
 "@
 

@@ -1,0 +1,34 @@
+{
+  "name": "flex-rf",
+  "version": "0.1.0",
+  "description": "Flex RF and tidy3d.rf guidance for RF and microwave simulation workflows.",
+  "author": {
+    "name": "Flexcompute",
+    "email": "support@flexcompute.com",
+    "url": "https://www.flexcompute.com/"
+  },
+  "homepage": "https://docs.flexcompute.com/projects/flex-rf/",
+  "keywords": [
+    "flex-rf",
+    "rf",
+    "microwave",
+    "simulation",
+    "tidy3d",
+    "smatrix",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Flex RF",
+    "shortDescription": "AI guidance for Flex RF microwave simulations.",
+    "longDescription": "Use Flex RF through your AI coding agent for RF and microwave simulation setup, 3D FDTD workflows, 2D mode analysis, result analysis, and documentation lookup. Includes tidy3d-mcp for current Flexcompute documentation and API lookup.",
+    "developerName": "Flexcompute",
+    "websiteURL": "https://www.flexcompute.com/",
+    "defaultPrompt": [
+      "Help me build a Flex RF S-parameter simulation.",
+      "Choose the right RF port and mesh settings.",
+      "Review this RF workflow for microwave simulation issues."
+    ],
+    "brandColor": "#00643C"
+  }
+}
