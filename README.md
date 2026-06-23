@@ -1,10 +1,10 @@
 # Flexcompute Plugins
 
-[Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/), [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/), and [Flex RF](https://docs.flexcompute.com/projects/flex-rf/) for your AI coding assistant.
+[Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/), [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/), and [Flex RF](https://docs.flexcompute.com/rf/latest) for your AI coding assistant.
 
 ## Why This Exists
 
-Instead of pasting docs, setup notes, [Tidy3D notebooks](https://github.com/flexcompute/tidy3d-notebooks), and simulation workflow context into every chat, install these plugins once. Your agent can retrieve semantically indexed Flexcompute guidance, including notebooks that capture real workflows, and use the right [Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/), [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/), or [Flex RF](https://docs.flexcompute.com/projects/flex-rf/) approach while it writes, debugs, or reviews code.
+Instead of pasting docs, setup notes, [Tidy3D notebooks](https://github.com/flexcompute/tidy3d-notebooks), and simulation workflow context into every chat, install these plugins once. Your agent can retrieve semantically indexed Flexcompute guidance, including notebooks that capture real workflows, and use the right [Tidy3D](https://docs.flexcompute.com/projects/tidy3d/en/latest/), [PhotonForge](https://docs.flexcompute.com/projects/photonforge/en/latest/), or [Flex RF](https://docs.flexcompute.com/rf/latest) approach while it writes, debugs, or reviews code.
 
 ## Install
 
