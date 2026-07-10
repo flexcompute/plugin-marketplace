@@ -21,6 +21,7 @@
     "displayName": "Tidy3D",
     "shortDescription": "AI guidance for Tidy3D simulations, APIs, and docs lookup.",
     "longDescription": "Use Tidy3D through your AI coding agent for simulation setup, script review, troubleshooting, geometry import, result analysis, and documentation lookup. Includes tidy3d-mcp and requires uv to launch it via uvx.",
+    "category": "Productivity",
     "developerName": "Flexcompute",
     "websiteURL": "https://www.flexcompute.com/",
     "defaultPrompt": [
