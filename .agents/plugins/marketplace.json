@@ -5,7 +5,8 @@
     "email": "support@flexcompute.com"
   },
   "interface": {
-    "displayName": "Flexcompute Plugins"
+    "displayName": "Flexcompute Plugins",
+    "category": "Productivity"
   },
   "plugins": [
     {

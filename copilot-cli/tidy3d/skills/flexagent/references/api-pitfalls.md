@@ -25,7 +25,7 @@ The following changes shipped in v2.11.0 and apply to any code targeting v2.11+.
 | `np.max(xarray_data)`                   | Always convert first: `data.values` before numpy operations                                                                                                     |
 | `sim_data.y.values`                     | Coordinate access requires selecting a dataset first: `sim_data["monitor"].Ey.y.values`                                                                         |
 | `ModeSolverData.plot_field()`           | In some versions, plotting methods live on the solver object (`ModeSolver`) rather than the data object — verify before modifying user code.                    |
-| Unverified gdstk/trimesh/cma/optax APIs | Always verify versions and usage with Docs Search                                                                                                               |
+| Unverified gdstk/trimesh/cma APIs | Always verify versions and usage with Docs Search                                                                                                               |
 | Unsure about ANY constructor parameter  | Search docs (`tidy3d_search_flexcompute_docs`) before generating the call. Never guess parameter names or value ranges — wrong guesses fail at validation time. |
 
 ## run_time Quality Factor Guide
