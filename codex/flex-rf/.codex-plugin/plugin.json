@@ -23,6 +23,10 @@
     "shortDescription": "AI guidance for Flex RF microwave simulations.",
     "longDescription": "Use Flex RF through your AI coding agent for RF and microwave simulation setup, 3D FDTD workflows, 2D mode analysis, result analysis, and documentation lookup. Includes tidy3d-mcp for current Flexcompute documentation and API lookup.",
     "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
     "developerName": "Flexcompute",
     "websiteURL": "https://www.flexcompute.com/",
     "defaultPrompt": [

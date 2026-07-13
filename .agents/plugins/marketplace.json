@@ -6,7 +6,11 @@
   },
   "interface": {
     "displayName": "Flexcompute Plugins",
-    "category": "Productivity"
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ]
   },
   "plugins": [
     {
