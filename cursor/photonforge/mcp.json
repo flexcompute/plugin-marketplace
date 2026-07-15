@@ -3,7 +3,11 @@
     "tidy3d": {
       "command": "uvx",
       "args": [
-        "tidy3d-mcp"
+        "--from",
+        "tidy3d-mcp>=0.16.5",
+        "tidy3d-mcp",
+        "--product",
+        "photonforge"
       ]
     }
   }

@@ -57,7 +57,13 @@ This README is the current public catalog. Until a plugin needs longer examples,
 | --- | --- | --- |
 | Skill | `photonforge-pcell-authoring` | PhotonForge PCell authoring, custom technologies, ports, hierarchy, schema-aware component definitions, and layout preview guidance. |
 | Skill | `photonforge-layout-verification` | Schematic-to-layout assembly, routing, physical and virtual connection checks, netlist inspection, LVS-style review, and overlap sanity checks. |
-| MCP server | `tidy3d` via `uvx tidy3d-mcp` | Flexcompute docs search and doc fetch tools for PhotonForge and related API guidance. Host-specific tool names can vary, but the tools end in `search_flexcompute_docs` and `fetch_flexcompute_doc`. |
+| Skill | `photonforge-circuit-simulation` | Circuit-level and time-domain simulation: `CircuitModel`, `CircuitTimeStepper`, pole-residue fit / `TimeDomainModel`, `pf.abstract` blocks, and ring/WDM pitfalls. |
+| Skill | `photonforge-project-versioning` | Version-controlled cloud projects and the browser-GUI API: create/load/version projects, import PDK libraries, and set up `photonforge-server`. |
+| Skill | `photonforge-schema-serialization` | Save/load full-state PHF, GDS/OASIS layout interchange, Touchstone import, and `get_netlist` connectivity inspection. |
+| Skill | `photonforge-gui-automation` | Drive and verify the cloud GUI (`photonforge.simulation.cloud`): PDA SDK edits verified with a real browser via Playwright. |
+| Skill | `photonforge-live-viewer` | Local interactive layout viewer: lifecycle, port hygiene, multi-component showcase, fit-to-view, and the `window.lvApi` agent controls. |
+| Skill | `photonforge-yield-analysis` | Variation-aware yield / DFM: validated parametric surrogates over process corners plus wafer/lot Monte Carlo for functional statistics and yield. |
+| MCP server | `tidy3d` via `uvx --from 'tidy3d-mcp>=0.16.5' tidy3d-mcp --product photonforge` | PhotonForge docs search, doc fetch, and feedback tools. Host-specific tool names can vary, but the tools end in `search_photonforge_docs`, `fetch_photonforge_doc`, and `submit_photonforge_feedback`. |
 
 ### `flex-rf`
 

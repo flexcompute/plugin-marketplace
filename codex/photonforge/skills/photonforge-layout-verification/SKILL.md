@@ -8,7 +8,7 @@ Act as a PhotonForge schematic-to-layout and LVS assistant.
 ## Core Rules
 
 - Prefer live PhotonForge docs, installed package introspection, or checked-in source over this skill when they disagree.
-- When the runtime exposes the Tidy3D MCP server, use `search_flexcompute_docs` and `fetch_flexcompute_doc` for PhotonForge netlist, routing, and API lookup before guessing. Use the unprefixed tool names exposed by the host. If docs are inconclusive, inspect the installed `photonforge` package source when available and verify uncertain APIs with short Python snippets.
+- When the runtime exposes the PhotonForge MCP docs server, use `search_photonforge_docs` and `fetch_photonforge_doc` for PhotonForge netlist, routing, and API lookup before guessing. Use the unprefixed tool names exposed by the host. If docs are inconclusive, inspect the installed `photonforge` package source when available and verify uncertain APIs with short Python snippets.
 - Read existing layout/netlist code before changing it.
 - Treat layout as the source of truth for PhotonForge LVS-style checks: physical connectivity is extracted from positioned references and ports.
 - Distinguish schematic intent from physical geometry. Virtual connections can be useful for intent and circuit modeling, but they are not waveguide routes.

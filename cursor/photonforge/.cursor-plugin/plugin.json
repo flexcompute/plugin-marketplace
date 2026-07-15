@@ -1,8 +1,8 @@
 {
   "name": "photonforge",
   "displayName": "PhotonForge",
-  "version": "0.1.0",
-  "description": "PhotonForge PCell, layout, routing, and documentation guidance for AI coding agents.",
+  "version": "0.3.1",
+  "description": "PhotonForge PCell, layout, routing, circuit/time-domain simulation, project versioning + cloud-GUI (photonforge-server), serialization, GUI automation, LiveViewer, variation-aware yield/DFM, and documentation guidance for AI coding agents.",
   "author": {
     "name": "Flexcompute",
     "email": "support@flexcompute.com"
@@ -15,6 +15,21 @@
     "pcell",
     "lvs",
     "routing",
+    "circuit",
+    "simulation",
+    "time-domain",
+    "project-versioning",
+    "collaboration",
+    "cloud-gui",
+    "photonforge-server",
+    "pda",
+    "serialization",
+    "liveviewer",
+    "yield",
+    "dfm",
+    "tolerance",
+    "variation",
+    "montecarlo",
     "tidy3d",
     "mcp"
   ],

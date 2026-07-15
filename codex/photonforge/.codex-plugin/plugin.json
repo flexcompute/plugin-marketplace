@@ -1,7 +1,7 @@
 {
   "name": "photonforge",
-  "version": "0.1.0",
-  "description": "PhotonForge PCell, layout, routing, and documentation guidance for AI coding agents.",
+  "version": "0.3.1",
+  "description": "PhotonForge PCell, layout, routing, circuit/time-domain simulation, project versioning + cloud-GUI (photonforge-server), serialization, GUI automation, LiveViewer, variation-aware yield/DFM, and documentation guidance for AI coding agents.",
   "author": {
     "name": "Flexcompute",
     "email": "support@flexcompute.com",
@@ -15,14 +15,29 @@
     "pcell",
     "lvs",
     "routing",
+    "circuit",
+    "simulation",
+    "time-domain",
+    "project-versioning",
+    "collaboration",
+    "cloud-gui",
+    "photonforge-server",
+    "pda",
+    "serialization",
+    "liveviewer",
+    "yield",
+    "dfm",
+    "tolerance",
+    "variation",
+    "montecarlo",
     "tidy3d",
     "mcp"
   ],
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "PhotonForge",
-    "shortDescription": "AI guidance for PhotonForge PCells, routing, LVS, and docs lookup.",
-    "longDescription": "Use PhotonForge through your AI coding agent for parametric component authoring, technology-aware layout construction, schematic-to-layout routing, and LVS-style verification. Includes tidy3d-mcp for current Flexcompute documentation and API lookup.",
+    "shortDescription": "AI guidance for PhotonForge PCells, routing, LVS, circuit simulation, project versioning + cloud GUI, yield/DFM, and docs lookup.",
+    "longDescription": "Use PhotonForge through your AI coding agent for parametric component authoring, technology-aware layout construction, schematic-to-layout routing, LVS-style verification, circuit and time-domain simulation, version-controlled cloud projects and the browser-GUI API (create/edit/simulate projects, set up photonforge-server), design serialization, cloud-GUI automation, LiveViewer visualization, and variation-aware yield/tolerance analysis (surrogate models over process corners + wafer/lot Monte Carlo). Includes tidy3d-mcp in PhotonForge product mode for current documentation and API lookup.",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
@@ -33,7 +48,10 @@
     "defaultPrompt": [
       "Help me write a PhotonForge parametric component.",
       "Route this PhotonForge schematic intent into physical layout.",
-      "Review this PhotonForge layout for LVS and port-connectivity issues."
+      "Review this PhotonForge layout for LVS and port-connectivity issues.",
+      "Run a time-domain simulation of this PhotonForge circuit.",
+      "Version-control this PhotonForge project and open it in the browser GUI.",
+      "How do fabrication variations affect this circuit's yield?"
     ],
     "brandColor": "#00643C"
   }
