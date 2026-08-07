@@ -3,6 +3,8 @@
     "tidy3d": {
       "command": "uvx",
       "args": [
+        "--from",
+        "tidy3d-mcp>=0.16.5",
         "tidy3d-mcp"
       ]
     }

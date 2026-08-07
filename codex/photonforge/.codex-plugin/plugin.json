@@ -1,6 +1,6 @@
 {
   "name": "photonforge",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "PhotonForge PCell, layout, routing, circuit/time-domain simulation, project versioning + cloud-GUI (photonforge-server), serialization, GUI automation, LiveViewer, variation-aware yield/DFM, and documentation guidance for AI coding agents.",
   "author": {
     "name": "Flexcompute",

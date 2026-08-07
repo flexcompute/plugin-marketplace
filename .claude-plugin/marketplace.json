@@ -4,18 +4,76 @@
     "name": "Flexcompute",
     "email": "support@flexcompute.com"
   },
+  "description": "Flexcompute product plugins for Tidy3D, PhotonForge, and Flex RF simulation workflows.",
   "plugins": [
     {
       "name": "flex-rf",
-      "source": "./claude-code/flex-rf"
+      "source": "./claude-code/flex-rf",
+      "relevance": {
+        "topic": "Flex RF",
+        "signals": {
+          "cli": [
+            "flex-rf"
+          ],
+          "manifestDeps": [
+            {
+              "file": "[/\\\\]pyproject\\.toml$",
+              "pattern": "\"flex[-_.]rf(?![\\w-])"
+            },
+            {
+              "file": "[/\\\\]requirements[^/\\\\]*\\.txt$",
+              "pattern": "(^|[\\r\\n])\\s*flex[-_.]rf(?![\\w-])"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "photonforge",
-      "source": "./claude-code/photonforge"
+      "source": "./claude-code/photonforge",
+      "relevance": {
+        "topic": "PhotonForge",
+        "signals": {
+          "cli": [
+            "photonforge-server"
+          ],
+          "filesRead": [
+            "**/*.phf"
+          ],
+          "manifestDeps": [
+            {
+              "file": "[/\\\\]pyproject\\.toml$",
+              "pattern": "\"photonforge(?![\\w-])"
+            },
+            {
+              "file": "[/\\\\]requirements[^/\\\\]*\\.txt$",
+              "pattern": "(^|[\\r\\n])\\s*photonforge(?![\\w-])"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "tidy3d",
-      "source": "./claude-code/tidy3d"
+      "source": "./claude-code/tidy3d",
+      "relevance": {
+        "topic": "Tidy3D",
+        "signals": {
+          "cli": [
+            "tidy3d"
+          ],
+          "manifestDeps": [
+            {
+              "file": "[/\\\\]pyproject\\.toml$",
+              "pattern": "\"tidy3d(?![\\w-])"
+            },
+            {
+              "file": "[/\\\\]requirements[^/\\\\]*\\.txt$",
+              "pattern": "(^|[\\r\\n])\\s*tidy3d(?![\\w-])"
+            }
+          ]
+        }
+      }
     }
   ]
 }
