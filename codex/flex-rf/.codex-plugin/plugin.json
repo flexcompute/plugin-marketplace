@@ -1,6 +1,6 @@
 {
   "name": "flex-rf",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Flex RF and tidy3d.rf guidance for RF and microwave simulation workflows.",
   "author": {
     "name": "Flexcompute",

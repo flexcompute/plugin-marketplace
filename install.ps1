@@ -148,7 +148,7 @@ function Select-ClientMode {
     [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "Claude &Code", "Configure Claude Code."))
     [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "GitHub &Copilot CLI", "Configure GitHub Copilot CLI."))
     [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "C&ursor", "Show Cursor plugin installation command."))
-    [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "&Skip client setup", "Only check uvx and tidy3d-mcp."))
+    [void]$choices.Add((New-Object System.Management.Automation.Host.ChoiceDescription "&Skip client setup", "Only check uvx and the selected MCP commands."))
 
     $selection = $Host.UI.PromptForChoice("AI coding tool", "Install Flexcompute plugins for:", $choices, 0)
     if ($selection -lt 0) {
@@ -161,7 +161,7 @@ function Select-ClientMode {
 function Install-Uv {
     Write-Section "Installing uv"
     Write-Host @"
-uv provides uvx, which runs tidy3d-mcp in an isolated Python environment.
+uv provides uvx, which runs Flexcompute MCP commands in isolated Python environments.
 This step uses Astral's official standalone installer from:
 
   https://astral.sh/uv/install.ps1
@@ -179,9 +179,9 @@ function Write-UvExplanation {
     Write-Host @"
 uvx is not on PATH yet.
 
-Flexcompute uses uvx to start tidy3d-mcp without adding Python packages to
-your simulation project. tidy3d-mcp is the local MCP server that gives your AI
-coding tool Flexcompute documentation search and fetch tools.
+Flexcompute uses uvx to start the MCP command required by each selected plugin
+without adding Python packages to your simulation project. These commands give
+your AI coding tool Flexcompute documentation search and fetch tools.
 "@
 }
 
@@ -236,11 +236,16 @@ Run one of these commands instead:
     exit 2
 }
 
-function Check-Mcp {
-    Write-Section "Checking tidy3d-mcp"
-    $result = Get-ExternalOutput @("uvx", "tidy3d-mcp", "--help")
+function Assert-McpCommand {
+    param(
+        [string]$Name,
+        [string[]]$Command
+    )
+
+    Write-Section "Checking $Name"
+    $result = Get-ExternalOutput $Command
     if ($result.ExitCode -eq 0) {
-        Write-Ok "tidy3d-mcp CLI starts through uvx"
+        Write-Ok "$Name starts through uvx"
         return
     }
 
@@ -249,7 +254,18 @@ function Check-Mcp {
             Write-Host $stream
         }
     }
-    Stop-Bootstrap "tidy3d-mcp did not start through uvx"
+    Stop-Bootstrap "$Name did not start through uvx"
+}
+
+function Check-Mcps {
+    if ($SelectedPlugins -contains "tidy3d") {
+        $tidy3dMcpCommand = @("uvx", "--from", "tidy3d>=2.12.0", "tidy3d", "mcp", "--help")
+        Assert-McpCommand "tidy3d mcp" $tidy3dMcpCommand
+    }
+    if (($SelectedPlugins -contains "photonforge") -or ($SelectedPlugins -contains "flex-rf")) {
+        $productDocsMcpCommand = @("uvx", "--from", "tidy3d-mcp>=0.16.5", "tidy3d-mcp", "--help")
+        Assert-McpCommand "tidy3d-mcp" $productDocsMcpCommand
+    }
 }
 
 function Test-ClientMarketplaceInstalled {
@@ -496,7 +512,7 @@ function Invoke-Bootstrap {
     Write-Intro
 
     Ensure-Uvx
-    Check-Mcp
+    Check-Mcps
     Select-ClientMode
     Configure-Clients
     Write-ReloadGuidance

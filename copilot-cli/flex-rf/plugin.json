@@ -1,7 +1,8 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "flex-rf",
   "description": "Flex RF and tidy3d.rf guidance for RF and microwave simulation workflows.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "Flexcompute",
     "email": "support@flexcompute.com",
@@ -16,6 +17,5 @@
     "tidy3d",
     "smatrix",
     "mcp"
-  ],
-  "mcpServers": "./.mcp.json"
+  ]
 }

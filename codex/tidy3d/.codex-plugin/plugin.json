@@ -1,6 +1,6 @@
 {
   "name": "tidy3d",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Tidy3D simulation, API, and documentation guidance for AI coding agents.",
   "author": {
     "name": "Flexcompute",
@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Tidy3D",
     "shortDescription": "AI guidance for Tidy3D simulations, APIs, and docs lookup.",
-    "longDescription": "Use Tidy3D through your AI coding agent for simulation setup, script review, troubleshooting, geometry import, result analysis, and documentation lookup. Includes tidy3d-mcp and requires uv to launch it via uvx.",
+    "longDescription": "Use Tidy3D through your AI coding agent for simulation setup, script review, troubleshooting, geometry import, result analysis, and documentation lookup. Uses Tidy3D's built-in MCP server and requires uv to launch it via uvx.",
     "category": "Productivity",
     "capabilities": [
       "Interactive",

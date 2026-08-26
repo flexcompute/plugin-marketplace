@@ -134,7 +134,7 @@ parse_args() {
 install_uv() {
   section "Installing uv"
   cat <<'EOF'
-uv provides uvx, which runs tidy3d-mcp in an isolated Python environment.
+uv provides uvx, which runs Flexcompute MCP commands in isolated Python environments.
 This step uses Astral's official standalone installer from:
 
   https://astral.sh/uv/install.sh
@@ -162,9 +162,9 @@ explain_uv_needed() {
   cat <<'EOF'
 uvx is not on PATH yet.
 
-Flexcompute uses uvx to start tidy3d-mcp without adding Python packages to
-your simulation project. tidy3d-mcp is the local MCP server that gives your AI
-coding tool Flexcompute documentation search and fetch tools.
+Flexcompute uses uvx to start the MCP command required by each selected plugin
+without adding Python packages to your simulation project. These commands give
+your AI coding tool Flexcompute documentation search and fetch tools.
 EOF
 }
 
@@ -222,7 +222,7 @@ EOF
 print_intro() {
   section "Flexcompute plugin setup"
   cat <<'EOF'
-This installs Tidy3D and PhotonForge for your AI coding tool.
+This installs Tidy3D, PhotonForge, and Flex RF for your AI coding tool.
 If uvx is missing, you will be asked before uv is installed.
 EOF
 
@@ -284,15 +284,45 @@ select_client_mode() {
   ok "selected ${choice}"
 }
 
-check_mcp() {
-  section "Checking tidy3d-mcp"
-  if help_output="$(capture_no_color uvx tidy3d-mcp --help 2>&1)"; then
-    ok "tidy3d-mcp CLI starts through uvx"
+plugin_selected() {
+  local selected_plugin
+  for selected_plugin in "${SELECTED_PLUGINS[@]}"; do
+    if [[ "$selected_plugin" == "$1" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+check_tidy3d_mcp() {
+  section "Checking the Tidy3D MCP command"
+  if help_output="$(capture_no_color uvx --from 'tidy3d>=2.12.0' tidy3d mcp --help 2>&1)"; then
+    ok "tidy3d mcp starts through uvx"
+    return
+  fi
+
+  printf '%s\n' "$help_output" >&2
+  die "tidy3d mcp did not start through uvx"
+}
+
+check_product_docs_mcp() {
+  section "Checking the product documentation MCP command"
+  if help_output="$(capture_no_color uvx --from 'tidy3d-mcp>=0.16.5' tidy3d-mcp --help 2>&1)"; then
+    ok "tidy3d-mcp starts through uvx"
     return
   fi
 
   printf '%s\n' "$help_output" >&2
   die "tidy3d-mcp did not start through uvx"
+}
+
+check_mcps() {
+  if plugin_selected tidy3d; then
+    check_tidy3d_mcp
+  fi
+  if plugin_selected photonforge || plugin_selected flex-rf; then
+    check_product_docs_mcp
+  fi
 }
 
 client_marketplace_installed() {
@@ -555,7 +585,7 @@ main() {
   print_intro
 
   ensure_uvx
-  check_mcp
+  check_mcps
   select_client_mode
   configure_clients
   print_reload_guidance

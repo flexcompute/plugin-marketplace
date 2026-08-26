@@ -1,7 +1,8 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "photonforge",
   "description": "PhotonForge PCell, layout, routing, circuit/time-domain simulation, project versioning + cloud-GUI (photonforge-server), serialization, GUI automation, LiveViewer, variation-aware yield/DFM, and documentation guidance for AI coding agents.",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "author": {
     "name": "Flexcompute",
     "email": "support@flexcompute.com",
@@ -32,6 +33,5 @@
     "montecarlo",
     "tidy3d",
     "mcp"
-  ],
-  "mcpServers": "./.mcp.json"
+  ]
 }
