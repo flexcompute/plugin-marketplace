@@ -582,8 +582,10 @@
     if (!el) return;
     var d = el.querySelector && el.querySelector("details.dish-fine");
     if (d) d.open = true;
+    requestAnimationFrame(function () { el.scrollIntoView({ behavior: "auto", block: "start" }); });
   }
   window.addEventListener("hashchange", openHash);
+  window.addEventListener("load", openHash);
   openHash();
 
   var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
