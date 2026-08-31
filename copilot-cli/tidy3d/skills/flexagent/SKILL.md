@@ -72,9 +72,17 @@ If live documentation or package introspection for the installed Tidy3D version 
 
 Tool names may vary by runtime. Use the closest available tool matching the described capability.
 
-Available via `tidy3d-mcp`:
+Available tools can include:
 - **Docs search** (e.g., `tidy3d_search_flexcompute_docs`) — batch queries. Always verify APIs before first use or when upgrading.
 - **Doc fetch** (e.g., `tidy3d_fetch_flexcompute_doc`) — retrieve full runnable example code by URL.
+
+### Optional editor tools
+
+Editor-local tools are session-dependent. Treat the current tool list as authoritative:
+
+- If no editor-local tools are listed, continue with docs, code, and cloud workflows. If the user asks for an unavailable editor action, explain that the editor integration is not available in this session; do not install, launch, bootstrap, or reconfigure the editor or extension.
+- If only a subset is listed, use only those environment, validation, viewer, capture, or report tools; do not infer missing capabilities or substitute an unavailable tool.
+- The presence of editor-local tools never relaxes consent or safety gates. Cloud runs still require the cost estimate and explicit consent in `references/protocols/simulation-execution.md`; overwrites and destructive or risky actions still require confirmation; editor-owned pickers and confirmations remain user decisions.
 
 ## Non-Negotiables
 

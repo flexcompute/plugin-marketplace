@@ -43,7 +43,7 @@ Ask which file to work in:
 
 Use the closest available editing capability for the file type: notebook-cell edits for notebooks, inline text edits for scripts.
 
-Ensure basic imports (`import tidy3d as td`, `import numpy as np`, `from tidy3d import web`) exist before writing simulation code. Don't try to auto-detect the Python environment.
+Ensure basic imports (`import tidy3d as td`, `import numpy as np`, `from tidy3d import web`) exist before writing simulation code. If an editor-local Python-environment detection tool is advertised, use it to inspect the active environment; otherwise do not try to auto-detect the environment.
 
 ---
 
@@ -159,7 +159,7 @@ Never use `run_time="auto"` or `run_time=None` for FDTD — invalid. A hardcoded
 
 ## Step 6 — Inspect, Estimate, Run, Analyze
 
-1. **Inspect — automated scratch.** Reuse the latest passing Phase 1 `protocols/post-build-audit.md` result when the geometry is unchanged. Run `post-build-audit.md` here only if the current geometry has not been audited yet or changed after Phase 1. Don't write inspection code into the user's file and don't ask the user to run audit code on your behalf. For FDTD waveguides / substrates, verify PML extension (see `protocols/geometry-inspection.md` step 3).
+1. **Inspect — automated scratch and advertised editor tools.** Reuse the latest passing Phase 1 `protocols/post-build-audit.md` result when the geometry is unchanged. Run `post-build-audit.md` here only if the current geometry has not been audited yet or changed after Phase 1. Don't write inspection code into the user's file and don't ask the user to run audit code on your behalf. For FDTD waveguides / substrates, verify PML extension (see `protocols/geometry-inspection.md` step 3). If an editor-local simulation-validation tool is advertised, use it after the scratch audit and resolve every warning or error it reports. Use a viewer-opening tool only when it is also advertised and the user asks to see the setup; a partial bridge does not imply either capability.
 2. **Estimate + run.** Route through `protocols/simulation-execution.md`. Never call `job.run()` without explicit consent at the cost gate.
 3. **Analyze.** Once results return, route through `workflow-analysis.md`. See `references/recommended-analyses.md` for type-specific analysis suggestions.
 

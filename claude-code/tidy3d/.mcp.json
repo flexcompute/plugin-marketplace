@@ -4,9 +4,8 @@
       "command": "uvx",
       "args": [
         "--from",
-        "tidy3d>=2.12.0",
-        "tidy3d",
-        "mcp"
+        "tidy3d-mcp>=0.16.7",
+        "tidy3d-mcp"
       ]
     }
   }

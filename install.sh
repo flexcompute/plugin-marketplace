@@ -296,13 +296,13 @@ plugin_selected() {
 
 check_tidy3d_mcp() {
   section "Checking the Tidy3D MCP command"
-  if help_output="$(capture_no_color uvx --from 'tidy3d>=2.12.0' tidy3d mcp --help 2>&1)"; then
-    ok "tidy3d mcp starts through uvx"
+  if help_output="$(capture_no_color uvx --from 'tidy3d-mcp>=0.16.7' tidy3d-mcp --help 2>&1)"; then
+    ok "tidy3d-mcp >=0.16.7 starts through uvx"
     return
   fi
 
   printf '%s\n' "$help_output" >&2
-  die "tidy3d mcp did not start through uvx"
+  die "tidy3d-mcp >=0.16.7 did not start through uvx"
 }
 
 check_product_docs_mcp() {

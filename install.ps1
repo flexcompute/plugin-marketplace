@@ -259,8 +259,8 @@ function Assert-McpCommand {
 
 function Check-Mcps {
     if ($SelectedPlugins -contains "tidy3d") {
-        $tidy3dMcpCommand = @("uvx", "--from", "tidy3d>=2.12.0", "tidy3d", "mcp", "--help")
-        Assert-McpCommand "tidy3d mcp" $tidy3dMcpCommand
+        $tidy3dMcpCommand = @("uvx", "--from", "tidy3d-mcp>=0.16.7", "tidy3d-mcp", "--help")
+        Assert-McpCommand "tidy3d-mcp >=0.16.7" $tidy3dMcpCommand
     }
     if (($SelectedPlugins -contains "photonforge") -or ($SelectedPlugins -contains "flex-rf")) {
         $productDocsMcpCommand = @("uvx", "--from", "tidy3d-mcp>=0.16.5", "tidy3d-mcp", "--help")

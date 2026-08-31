@@ -20,7 +20,7 @@ Windows PowerShell:
 powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/flexcompute/plugin-marketplace/main/install.ps1 | iex"
 ```
 
-The installer checks `uvx` and the MCP command required by each plugin you choose. Tidy3D uses the MCP server built into `tidy3d>=2.12.0`; PhotonForge and Flex RF use `tidy3d-mcp>=0.16.5`.
+The installer checks `uvx` and the MCP command required by each plugin you choose. Tidy3D uses `tidy3d-mcp>=0.16.7`; PhotonForge and Flex RF use `tidy3d-mcp>=0.16.5`.
 
 If `uvx` is missing in an interactive terminal, the installer asks before running Astral's official [`uv`](https://docs.astral.sh/uv/) installer. In a headless terminal, pass `--install-uv` to opt in up front. Choose one plugin with `--plugin tidy3d`, `--plugin photonforge`, or `--plugin flex-rf`; the default is all three. In PowerShell, use `-Plugin` instead.
 
@@ -53,7 +53,7 @@ This README is the current public catalog. Until a plugin needs longer examples,
 | Installed surface | Name | What it enables |
 | --- | --- | --- |
 | Skill | `flexagent` | Tidy3D simulation setup, API usage, troubleshooting, geometry import, result analysis, cost-aware workflow guidance, and script review. |
-| MCP server | `tidy3d` via `uvx --from 'tidy3d>=2.12.0' tidy3d mcp` | Flexcompute docs search and doc fetch tools. Host-specific tool names can vary, but the tools end in `search_flexcompute_docs` and `fetch_flexcompute_doc`. |
+| MCP server | `tidy3d` via `uvx --from 'tidy3d-mcp>=0.16.7' tidy3d-mcp` | Flexcompute docs tools plus environment, validation, viewer, capture, and report tools when an authenticated compatible editor bridge advertises those capabilities. Without that bridge, the server remains remote-only. |
 
 ### `photonforge`
 
@@ -82,7 +82,7 @@ Use this path if you want to run the steps yourself. Install [`uv`](https://docs
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
-uvx --from 'tidy3d>=2.12.0' tidy3d mcp --help
+uvx --from 'tidy3d-mcp>=0.16.7' tidy3d-mcp --help
 uvx --from 'tidy3d-mcp>=0.16.5' tidy3d-mcp --help
 ```
 
@@ -90,7 +90,7 @@ On Windows PowerShell:
 
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-uvx --from 'tidy3d>=2.12.0' tidy3d mcp --help
+uvx --from 'tidy3d-mcp>=0.16.7' tidy3d-mcp --help
 uvx --from 'tidy3d-mcp>=0.16.5' tidy3d-mcp --help
 ```
 
@@ -171,6 +171,6 @@ copilot plugin install flex-rf@flexcompute
 
 If the plugins do not appear, restart or reload the AI coding tool first.
 
-If Tidy3D MCP tools do not start, run `uvx --from 'tidy3d>=2.12.0' tidy3d mcp --help`. For PhotonForge or Flex RF MCP tools, run `uvx --from 'tidy3d-mcp>=0.16.5' tidy3d-mcp --help`.
+If Tidy3D MCP tools do not start, run `uvx --from 'tidy3d-mcp>=0.16.7' tidy3d-mcp --help`. For PhotonForge or Flex RF MCP tools, run `uvx --from 'tidy3d-mcp>=0.16.5' tidy3d-mcp --help`.
 
 If installation still fails, open an issue at https://github.com/flexcompute/plugin-marketplace/issues with your operating system, AI coding tool, install command, and terminal output.
