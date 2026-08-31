@@ -545,15 +545,16 @@
   var CANON = "https://flexcompute.github.io/plugin-marketplace/";
 
   function copyText(text, ok) {
-    function legacy() {
+    var done = false;
+    try {
       var ta = document.createElement("textarea");
       ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
       document.body.appendChild(ta); ta.select();
-      try { document.execCommand("copy"); ok(); } catch (err) {}
+      done = document.execCommand("copy");
       document.body.removeChild(ta);
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, legacy);
-    else legacy();
+    } catch (err) { done = false; }
+    if (done) { ok(); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, function () {});
   }
 
   document.addEventListener("click", function (e) {
@@ -584,7 +585,7 @@
     if (d) d.open = true;
     var tries = 0;
     (function assertScroll() {
-      el.scrollIntoView({ behavior: "auto", block: "start" });
+      el.scrollIntoView({ behavior: "instant", block: "start" });
       tries++;
       if (tries < 5) setTimeout(assertScroll, tries * 400);
     })();
