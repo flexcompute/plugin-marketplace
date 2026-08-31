@@ -582,7 +582,7 @@
     if (!el) return;
     var d = el.querySelector && el.querySelector("details.dish-fine");
     if (d) d.open = true;
-    requestAnimationFrame(function () { el.scrollIntoView({ behavior: "auto", block: "start" }); });
+    setTimeout(function () { el.scrollIntoView({ behavior: "auto", block: "start" }); }, 0);
   }
   window.addEventListener("hashchange", openHash);
   window.addEventListener("load", openHash);
