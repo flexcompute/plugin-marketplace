@@ -31,7 +31,8 @@
     font-family: "Didot", "Bodoni 72", "Playfair Display", Georgia, "Times New Roman", serif;
     font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: clip; }
   code, .mono { font-family: ui-monospace, "SF Mono", Menlo, "Cascadia Code", Consolas, monospace; }
-  .dish-desc, .course-blurb, .lede, .install-note, .k-card p, .companion p, .ol-echo, .dish-note {
+  .dish-desc, .course-blurb, .lede, .install-note, .k-card p, .companion p, .ol-echo, .dish-note,
+  .dish-fine p {
     font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Sitka Text", "Book Antiqua", Georgia, serif; }
   ::selection { background: var(--pgreen); color: #fff; }
   button { font: inherit; color: inherit; background: none; border: none; padding: 0; cursor: pointer; }
@@ -157,6 +158,21 @@
   .dish-links { margin-left: auto; display: flex; gap: 10px; white-space: nowrap; }
   .dish-links a { color: var(--pfaint); text-decoration: none; }
   .dish-links a:hover { color: var(--pgreen); text-decoration: underline; text-underline-offset: 3px; }
+
+  .dish-fine { margin: -3px 0 9px; }
+  .k-card .dish-fine { margin: -4px 0 10px; }
+  .special-card .dish-fine { margin: -8px 0 14px; }
+  .dish-fine summary { list-style: none; cursor: pointer; display: inline-block;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 9.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--pfaint); }
+  .dish-fine summary::-webkit-details-marker { display: none; }
+  .dish-fine summary::before { content: "+"; margin-right: 6px; }
+  .dish-fine[open] summary::before { content: "\2212"; }
+  .dish-fine summary:hover, .dish-fine[open] summary { color: var(--pgreen); }
+  .dish-fine p { margin: 6px 0 0; padding-left: 12px; border-left: 1px dotted var(--pline);
+    font-style: italic; font-size: 13.5px; line-height: 1.55; color: var(--pmut); text-wrap: pretty; }
+  .dish, .k-card, .special-card { scroll-margin-top: 70px; }
+  .dish:target, .k-card:target, .special-card:target { outline: 1px dotted var(--pgreen); outline-offset: 9px; }
 
   .divider-row { display: block; width: 300px; margin: 34px auto 0; opacity: 0.5; }
 
@@ -342,12 +358,13 @@
     <p class="course-links">v0.2.2 · 1 dish · <a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/tidy3d" target="_blank" rel="noopener">pkg &#8599;</a></p>
   </div>
   <div class="cards solo">
-<article class="dish" data-search="flexagent tidy3d the default tidy3d brain: fdtd, mode, eme, smatrix, heat/charge — builds simulations from scratch, debugs errors, analyzes data, submits cloud runs, imports gds/stl. set up a tidy3d silicon waveguide simulation" data-lane="stable">
+<article class="dish" id="tidy3d-flexagent" data-search="flexagent tidy3d the default tidy3d brain: fdtd, mode, eme, smatrix, heat/charge — builds simulations from scratch, debugs errors, analyzes data, submits cloud runs, imports gds/stl. set up a tidy3d silicon waveguide simulation default skill for tidy3d, the flexcompute simulation cloud, and photonic-device modeling: fdtd, mode, eme, smatrix, heat/charge. use when building simulations from scratch, debugging errors or unexpected results, analyzing or plotting data, submitting cloud runs (flexcredits or vgpu), running sweeps, importing gds/stl, fitting dispersion, or learning tidy3d apis, physics, or workflows. covers common devices: waveguides, resonators, splitters, couplers, gratings, filters, interferometers, polarization devices, cavities, metasurfaces, and tcad active devices. use for tidy3d work unless the user explicitly requests inverse design, adjoint optimization, autonomous design, or a multi-experiment design loop." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">flexagent</h3><span class="dish-leader"></span><span class="dish-price">0.2.2</span></div>
   <p class="dish-desc">The default Tidy3D brain: FDTD, MODE, EME, SMATRIX, HEAT/CHARGE — builds simulations from scratch, debugs errors, analyzes data, submits cloud runs, imports GDS/STL.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Default skill for Tidy3D, the Flexcompute simulation cloud, and photonic-device modeling: FDTD, MODE, EME, SMATRIX, HEAT/CHARGE. Use when building simulations from scratch, debugging errors or unexpected results, analyzing or plotting data, submitting cloud runs (FlexCredits or vGPU), running sweeps, importing GDS/STL, fitting dispersion, or learning Tidy3D APIs, physics, or workflows. Covers common devices: waveguides, resonators, splitters, couplers, gratings, filters, interferometers, polarization devices, cavities, metasurfaces, and TCAD active devices. Use for Tidy3D work unless the user explicitly requests inverse design, adjoint optimization, autonomous design, or a multi-experiment design loop.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>set up a Tidy3D silicon waveguide simulation</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/tidy3d/skills/flexagent" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#tidy3d-flexagent" data-link="tidy3d-flexagent" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/tidy3d/skills/flexagent" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article></div>
   <span class="art art-divider2 divider-row" aria-hidden="true"></span>
@@ -360,75 +377,83 @@
     <p class="course-links">v0.3.3 · 8 dishes · <a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge" target="_blank" rel="noopener">pkg &#8599;</a></p>
   </div>
   <div class="cards">
-<article class="dish" data-search="photonforge-pcell-authoring photonforge author and repair parametric components: custom technologies, ports, hierarchy, and schema-aware definitions ready for gui serialization. create a parameterized mmi component" data-lane="stable">
+<article class="dish" id="photonforge-pcell-authoring" data-search="photonforge-pcell-authoring photonforge author and repair parametric components: custom technologies, ports, hierarchy, and schema-aware definitions ready for gui serialization. create a parameterized mmi component author, review, and repair photonforge parametric components (pcells), custom technologies, ports, hierarchy, and schema-aware component definitions. use when the user is creating or debugging photonforge components, using @pf.parametric_component or @pf.parametric_technology, building geometry with photonforge apis, exposing ports, working with reference hierarchy, preparing components for gui/schema serialization, or exporting layout previews." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">photonforge-pcell-authoring</h3><span class="dish-leader"></span><span class="dish-price">0.3.3</span></div>
   <p class="dish-desc">Author and repair parametric components: custom technologies, ports, hierarchy, and schema-aware definitions ready for GUI serialization.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Author, review, and repair PhotonForge parametric components (PCells), custom technologies, ports, hierarchy, and schema-aware component definitions. Use when the user is creating or debugging PhotonForge components, using @pf.parametric_component or @pf.parametric_technology, building geometry with PhotonForge APIs, exposing ports, working with Reference hierarchy, preparing components for GUI/schema serialization, or exporting layout previews.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>create a parameterized MMI component</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-pcell-authoring" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#photonforge-pcell-authoring" data-link="photonforge-pcell-authoring" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-pcell-authoring" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article>
 
-<article class="dish" data-search="photonforge-layout-verification photonforge assemble and route layouts from schematic or netlist intent, then verify — ports, physical and virtual connections, lvs-style checks, overlap sanity. check this layout for port issues" data-lane="stable">
+<article class="dish" id="photonforge-layout-verification" data-search="photonforge-layout-verification photonforge assemble and route layouts from schematic or netlist intent, then verify — ports, physical and virtual connections, lvs-style checks, overlap sanity. check this layout for port issues assemble, route, inspect, and verify photonforge photonic layouts from schematic or netlist intent. use when the user is working with component_from_netlist, reference placement, physical connections, virtual connections, pf.parametric.route, routing errors, port or terminal exposure, get_netlist, lvs-style checks, schematic-to-layout conversion, or layout overlap/intersection sanity checks." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">photonforge-layout-verification</h3><span class="dish-leader"></span><span class="dish-price">0.3.3</span></div>
   <p class="dish-desc">Assemble and route layouts from schematic or netlist intent, then verify — ports, physical and virtual connections, LVS-style checks, overlap sanity.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Assemble, route, inspect, and verify PhotonForge photonic layouts from schematic or netlist intent. Use when the user is working with component_from_netlist, Reference placement, physical connections, virtual connections, pf.parametric.route, routing errors, port or terminal exposure, get_netlist, LVS-style checks, schematic-to-layout conversion, or layout overlap/intersection sanity checks.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>check this layout for port issues</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-layout-verification" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#photonforge-layout-verification" data-link="photonforge-layout-verification" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-layout-verification" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article>
 
-<article class="dish" data-search="photonforge-circuit-simulation photonforge compose component s-matrices into whole-circuit response, or drive the circuit with real waveforms in the time domain — modulators, wdm cascades, eye diagrams. simulate the eye diagram of this mrm link" data-lane="stable">
+<article class="dish" id="photonforge-circuit-simulation" data-search="photonforge-circuit-simulation photonforge compose component s-matrices into whole-circuit response, or drive the circuit with real waveforms in the time domain — modulators, wdm cascades, eye diagrams. simulate the eye diagram of this mrm link run and understand photonforge circuit-level and time-domain simulations. compose component s-matrices into a whole-circuit frequency response with pf.circuitmodel, or drive the circuit with real waveforms (modulator bit patterns, laser turn-on, ramps) and watch the output evolve with pf.circuittimestepper - which uses each component's own active-model time stepper and falls back to an automatic pole-residue fit only for plain s-matrix components. for a standalone s-matrix (e.g. measured touchstone) use pf.pole_residue_fit + pf.timedomainmodel directly. covers pf.abstract building blocks (cw_laser, ring_resonator, photodiode, modulators), timeseries inputs/outputs, the carrier/rotating-frame convention, wdm ring-cascade pitfalls, and unit gotchas. use when the user simulates modulators, ring/mrm links, wdm ring cascades, eye diagrams, transients, or photodiode detection, or asks what circuit vs time-domain simulation is." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">photonforge-circuit-simulation</h3><span class="dish-leader"></span><span class="dish-price">0.3.3</span></div>
   <p class="dish-desc">Compose component S-matrices into whole-circuit response, or drive the circuit with real waveforms in the time domain — modulators, WDM cascades, eye diagrams.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Run and understand PhotonForge circuit-level and time-domain simulations. Compose component S-matrices into a whole-circuit frequency response with pf.CircuitModel, or drive the circuit with real waveforms (modulator bit patterns, laser turn-on, ramps) and watch the output evolve with pf.CircuitTimeStepper - which uses each component&#x27;s own active-model time stepper and falls back to an automatic pole-residue fit only for plain S-matrix components. For a standalone S-matrix (e.g. measured Touchstone) use pf.pole_residue_fit + pf.TimeDomainModel directly. Covers pf.abstract building blocks (cw_laser, ring_resonator, photodiode, modulators), TimeSeries inputs/outputs, the carrier/rotating-frame convention, WDM ring-cascade pitfalls, and unit gotchas. Use when the user simulates modulators, ring/MRM links, WDM ring cascades, eye diagrams, transients, or photodiode detection, or asks what circuit vs time-domain simulation is.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>simulate the eye diagram of this MRM link</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-circuit-simulation" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#photonforge-circuit-simulation" data-link="photonforge-circuit-simulation" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-circuit-simulation" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article>
 
-<article class="dish" data-search="photonforge-live-viewer photonforge the local 2d layout viewer that redraws as you edit — plus a scriptable browser api for camera, layers, point inspection, and measurement. open this component in the live viewer" data-lane="stable">
+<article class="dish" id="photonforge-live-viewer" data-search="photonforge-live-viewer photonforge the local 2d layout viewer that redraws as you edit — plus a scriptable browser api for camera, layers, point inspection, and measurement. open this component in the live viewer the photonforge liveviewer is a local, interactive 2d layout viewer for pf.component and circuits: `from photonforge.live_viewer import liveviewer`, point it at a component, and it serves a browser view that redraws as you edit the design - the primary visual feedback loop while building layouts. covers the python lifecycle (open on a fixed port, push updates, show several components together, fit large devices, release the port) and the browser-side window.lvapi that lets an ai agent drive the viewer headlessly: zoom/pan/fit the camera, toggle layers, inspect the shape at a point, measure distances, and read the layer list, cell hierarchy, and camera state. use when the user wants to see or iterate on a photonforge layout, run a viewer script, drive or inspect the viewer programmatically, or fix a stuck/port-in-use liveviewer." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">photonforge-live-viewer</h3><span class="dish-leader"></span><span class="dish-price">0.3.3</span></div>
   <p class="dish-desc">The local 2D layout viewer that redraws as you edit — plus a scriptable browser API for camera, layers, point inspection, and measurement.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>The PhotonForge LiveViewer is a local, interactive 2D layout viewer for pf.Component and circuits: `from photonforge.live_viewer import LiveViewer`, point it at a component, and it serves a browser view that redraws as you edit the design - the primary visual feedback loop while building layouts. Covers the Python lifecycle (open on a fixed port, push updates, show several components together, fit large devices, release the port) and the browser-side window.lvApi that lets an AI agent drive the viewer headlessly: zoom/pan/fit the camera, toggle layers, inspect the shape at a point, measure distances, and read the layer list, cell hierarchy, and camera state. Use when the user wants to see or iterate on a PhotonForge layout, run a viewer script, drive or inspect the viewer programmatically, or fix a stuck/port-in-use LiveViewer.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>open this component in the live viewer</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-live-viewer" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#photonforge-live-viewer" data-link="photonforge-live-viewer" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-live-viewer" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article>
 
-<article class="dish" data-search="photonforge-project-versioning photonforge projects the cloud gui can open: immutable versions and tags, pdk libraries, team sharing, and photonforge-server running your local python. share this project so the team can click run" data-lane="stable">
+<article class="dish" id="photonforge-project-versioning" data-search="photonforge-project-versioning photonforge projects the cloud gui can open: immutable versions and tags, pdk libraries, team sharing, and photonforge-server running your local python. share this project so the team can click run version-control photonforge projects and use the api that creates and edits projects you can open, edit, and simulate in the browser gui. set up photonforge-server so the cloud gui runs the user's own python locally (recomputing their parametric components at new parameters and submitting their simulations); create and load projects, snapshot immutable versions and named tags, import pdk libraries, share with a team, and back a gui schematic with a custom component so a teammate can open a link and click run. this is the photonforge project and collaboration layer, also called pda (photonic design automation), used through `photonforge.pda` and the `photonforge-server` command. use when the user runs photonforge-server, connects the cloud gui to local python, calls photonforge.pda, versions/tags/shares a project, seeds a pdk library, or hits a gui recompute error such as 'no module named' or 'has no active model'." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">photonforge-project-versioning</h3><span class="dish-leader"></span><span class="dish-price">0.3.3</span></div>
   <p class="dish-desc">Projects the cloud GUI can open: immutable versions and tags, PDK libraries, team sharing, and <code>photonforge-server</code> running your local Python.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Version-control PhotonForge projects and use the API that creates and edits projects you can open, edit, and simulate in the browser GUI. Set up photonforge-server so the cloud GUI runs the user&#x27;s own Python locally (recomputing their parametric components at new parameters and submitting their simulations); create and load projects, snapshot immutable versions and named tags, import PDK libraries, share with a team, and back a GUI schematic with a custom component so a teammate can open a link and click Run. This is the PhotonForge project and collaboration layer, also called PDA (Photonic Design Automation), used through `photonforge.pda` and the `photonforge-server` command. Use when the user runs photonforge-server, connects the cloud GUI to local Python, calls photonforge.pda, versions/tags/shares a project, seeds a PDK library, or hits a GUI recompute error such as &#x27;No module named&#x27; or &#x27;has no active model&#x27;.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>share this project so the team can click Run</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-project-versioning" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#photonforge-project-versioning" data-link="photonforge-project-versioning" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-project-versioning" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article>
 
-<article class="dish" data-search="photonforge-schema-serialization photonforge how designs live on disk and round-trip: phf save/load, gds/oasis export for the foundry, touchstone import, netlist inspection. export this mask for fabrication" data-lane="stable">
+<article class="dish" id="photonforge-schema-serialization" data-search="photonforge-schema-serialization photonforge how designs live on disk and round-trip: phf save/load, gds/oasis export for the foundry, touchstone import, netlist inspection. export this mask for fabrication save and load photonforge designs, and understand how they are represented on disk. full-state phf files (pf.write_phf / pf.load_phf / pf.load_full_phf) preserve the component, hierarchy, ports, technology, and simulation models; layout export/import (pf.write_layout / pf.load_layout) handles gds/oasis mask geometry for the foundry; pf.load_snp imports touchstone s-parameters; and component.get_netlist() inspects circuit connectivity. use when the user saves or loads a design, moves it between sessions or machines, exports a mask for fabrication, imports measured s-parameters, debugs round-trip fidelity, or asks how photonforge stores components, references, ports, technologies, coordinates, and transforms." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">photonforge-schema-serialization</h3><span class="dish-leader"></span><span class="dish-price">0.3.3</span></div>
   <p class="dish-desc">How designs live on disk and round-trip: PHF save/load, GDS/OASIS export for the foundry, Touchstone import, netlist inspection.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Save and load PhotonForge designs, and understand how they are represented on disk. Full-state PHF files (pf.write_phf / pf.load_phf / pf.load_full_phf) preserve the component, hierarchy, ports, technology, and simulation models; layout export/import (pf.write_layout / pf.load_layout) handles GDS/OASIS mask geometry for the foundry; pf.load_snp imports Touchstone S-parameters; and Component.get_netlist() inspects circuit connectivity. Use when the user saves or loads a design, moves it between sessions or machines, exports a mask for fabrication, imports measured S-parameters, debugs round-trip fidelity, or asks how PhotonForge stores components, references, ports, technologies, coordinates, and transforms.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>export this mask for fabrication</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-schema-serialization" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#photonforge-schema-serialization" data-link="photonforge-schema-serialization" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-schema-serialization" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article>
 
-<article class="dish" data-search="photonforge-gui-automation photonforge “pda sdk controls, playwright verifies”: build and edit programmatically, then screenshot the real cloud gui to confirm what users actually see. confirm the ports render right in the gui" data-lane="stable">
+<article class="dish" id="photonforge-gui-automation" data-search="photonforge-gui-automation photonforge “pda sdk controls, playwright verifies”: build and edit programmatically, then screenshot the real cloud gui to confirm what users actually see. confirm the ports render right in the gui drive and verify the photonforge cloud gui (photonforge.simulation.cloud) from an ai coding session. make the edits programmatically with the photonforge pda sdk - create and update projects, components, and versions - then drive a real web browser with the playwright mcp server to open, screenshot, and confirm what the user actually sees in the gui (the project list, a schematic, port placement, wire routing). the established pattern is 'pda sdk controls, playwright verifies': treat the gui as a verification surface, not a control surface. use when the user wants to build, edit, or visually verify schematics and applications on the cloud gui, position a circuit correctly in a schematic, confirm port placement or wiring by screenshot, or reconnect the local photonforge-server so the gui comes back online." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">photonforge-gui-automation</h3><span class="dish-leader"></span><span class="dish-price">0.3.3</span></div>
   <p class="dish-desc">“PDA SDK controls, Playwright verifies”: build and edit programmatically, then screenshot the real cloud GUI to confirm what users actually see.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Drive and verify the PhotonForge cloud GUI (photonforge.simulation.cloud) from an AI coding session. Make the edits programmatically with the PhotonForge PDA SDK - create and update projects, components, and versions - then drive a real web browser with the Playwright MCP server to open, screenshot, and confirm what the user actually sees in the GUI (the project list, a schematic, port placement, wire routing). The established pattern is &#x27;PDA SDK controls, Playwright verifies&#x27;: treat the GUI as a verification surface, not a control surface. Use when the user wants to build, edit, or visually verify schematics and applications on the cloud GUI, position a circuit correctly in a schematic, confirm port placement or wiring by screenshot, or reconnect the local photonforge-server so the GUI comes back online.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>confirm the ports render right in the GUI</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-gui-automation" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#photonforge-gui-automation" data-link="photonforge-gui-automation" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-gui-automation" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article>
 
-<article class="dish" data-search="photonforge-yield-analysis photonforge process-corner surrogates plus monte-carlo virtual chips: yield numbers, tolerance analysis, dfm — “will this design survive the fab?” will this ring survive the fab?" data-lane="stable">
+<article class="dish" id="photonforge-yield-analysis" data-search="photonforge-yield-analysis photonforge process-corner surrogates plus monte-carlo virtual chips: yield numbers, tolerance analysis, dfm — “will this design survive the fab?” will this ring survive the fab? variation-aware yield and tolerance analysis for photonic circuits with photonforge + tidy3d. build validated parametric surrogates of every subcomponent over process corners (silicon thickness, waveguide width/cd, optionally etch/sidewall/temperature) from a bounded one-time fdtd budget, then monte-carlo hundreds of virtual chips across wafers and lots to get functional statistics — resonance/passband shift, q, linewidth, extinction ratio, insertion loss — as box plots, yield numbers, and lot/wafer/chip variance decompositions. use when the user asks how fabrication variations, process corners, or wafer/lot variability affect a circuit, or asks for yield prediction, design for manufacturability (dfm), tolerance analysis, process-corner monte carlo over a pdk, or 'will this design survive the fab'." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">photonforge-yield-analysis</h3><span class="dish-leader"></span><span class="dish-price">0.3.3</span></div>
   <p class="dish-desc">Process-corner surrogates plus Monte-Carlo virtual chips: yield numbers, tolerance analysis, DFM — “will this design survive the fab?”</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Variation-aware yield and tolerance analysis for photonic circuits with PhotonForge + Tidy3D. Build validated parametric surrogates of every subcomponent over process corners (silicon thickness, waveguide width/CD, optionally etch/sidewall/temperature) from a bounded one-time FDTD budget, then Monte-Carlo hundreds of virtual chips across wafers and lots to get functional statistics — resonance/passband shift, Q, linewidth, extinction ratio, insertion loss — as box plots, yield numbers, and lot/wafer/chip variance decompositions. Use when the user asks how fabrication variations, process corners, or wafer/lot variability affect a circuit, or asks for yield prediction, design for manufacturability (DFM), tolerance analysis, process-corner Monte Carlo over a PDK, or &#x27;will this design survive the fab&#x27;.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>will this ring survive the fab?</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-yield-analysis" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#photonforge-yield-analysis" data-link="photonforge-yield-analysis" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/photonforge/skills/photonforge-yield-analysis" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article></div>
   <span class="art art-divider2 divider-row" aria-hidden="true"></span>
@@ -441,12 +466,13 @@
     <p class="course-links">v0.1.2 · 1 dish · <a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/flex-rf" target="_blank" rel="noopener">pkg &#8599;</a></p>
   </div>
   <div class="cards solo">
-<article class="dish" data-search="flexagent flex-rf expert flex rf assistant: s-parameter sweeps, 2d mode analysis, lumped and wave ports, matching circuits, antenna gain workflows, legacy tidy3d.rf migration. sweep s11 for this patch antenna" data-lane="stable">
+<article class="dish" id="flex-rf-flexagent" data-search="flexagent flex-rf expert flex rf assistant: s-parameter sweeps, 2d mode analysis, lumped and wave ports, matching circuits, antenna gain workflows, legacy tidy3d.rf migration. sweep s11 for this patch antenna expert flex rf assistant for rf and microwave em simulation: s-parameter sweeps with terminalcomponentmodeler, 2d mode analysis with modesolver and modesimulation, lumped and wave port setup, lumped-element circuits, antenna gain / directivity / realized-gain workflows, microstrip / cpw / coax / waveguide launches, mesh refinement for metal layers, and migration from legacy tidy3d.rf. invoke for any flex rf or rf microwave task including build, review, troubleshoot, customize, run, migrate, or analyze." data-lane="stable">
   <div class="dish-head"><h3 class="dish-name">flexagent</h3><span class="dish-leader"></span><span class="dish-price">0.1.2</span></div>
   <p class="dish-desc">Expert Flex RF assistant: S-parameter sweeps, 2D mode analysis, lumped and wave ports, matching circuits, antenna gain workflows, legacy <code>tidy3d.rf</code> migration.</p>
+  <details class="dish-fine"><summary>the fine print</summary><p>Expert Flex RF assistant for RF and microwave EM simulation: S-parameter sweeps with TerminalComponentModeler, 2D mode analysis with ModeSolver and ModeSimulation, lumped and wave port setup, lumped-element circuits, antenna gain / directivity / realized-gain workflows, microstrip / CPW / coax / waveguide launches, mesh refinement for metal layers, and migration from legacy tidy3d.rf. Invoke for any Flex RF or RF microwave task including build, review, troubleshoot, customize, run, migrate, or analyze.</p></details>
   <p class="dish-say"><span class="say-caret">&#10095;</span>sweep S11 for this patch antenna</p>
   <div class="dish-foot"><span class="surfaces">CC · CX · CP</span>
-    <span class="dish-links"><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/flex-rf/skills/flexagent" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
+    <span class="dish-links"><a href="#flex-rf-flexagent" data-link="flex-rf-flexagent" title="copy a direct link to this dish">link</a><a href="https://github.com/flexcompute/plugin-marketplace/tree/main/claude-code/flex-rf/skills/flexagent" target="_blank" rel="noopener" title="published copy in the marketplace repo">pkg &#8599;</a></span>
   </div>
 </article></div>
   
@@ -516,16 +542,49 @@
 <script>
 (function () {
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var CANON = "https://flexcompute.github.io/plugin-marketplace/";
+
+  function copyText(text, ok) {
+    function legacy() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); ok(); } catch (err) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, legacy);
+    else legacy();
+  }
 
   document.addEventListener("click", function (e) {
     var link = e.target.closest && e.target.closest("a[data-noop]");
     if (link) { e.preventDefault(); }
+    var dl = e.target.closest && e.target.closest("a[data-link]");
+    if (dl) {
+      e.preventDefault();
+      copyText(CANON + "#" + dl.getAttribute("data-link"), function () {
+        dl.textContent = "copied";
+        setTimeout(function () { dl.textContent = "link"; }, 1600);
+      });
+      return;
+    }
     var btn = e.target.closest && e.target.closest("[data-goto]");
     if (!btn) return;
     e.preventDefault();
     var el = document.getElementById(btn.getAttribute("data-goto"));
     if (el) el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
   });
+
+  function openHash() {
+    var id = location.hash && decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    var d = el.querySelector && el.querySelector("details.dish-fine");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openHash);
+  openHash();
 
   var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
   tabs.forEach(function (tab) {
@@ -543,21 +602,11 @@
     btn.addEventListener("click", function () {
       var code = document.getElementById("code-" + btn.getAttribute("data-copy"));
       if (!code) return;
-      var text = code.textContent;
-      function ok() {
+      copyText(code.textContent, function () {
         btn.textContent = "copied";
         btn.classList.add("done");
         setTimeout(function () { btn.textContent = "copy"; btn.classList.remove("done"); }, 1600);
-      }
-      function legacy() {
-        var ta = document.createElement("textarea");
-        ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
-        document.body.appendChild(ta); ta.select();
-        try { document.execCommand("copy"); ok(); } catch (err) {}
-        document.body.removeChild(ta);
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, legacy);
-      else legacy();
+      });
     });
   });
 
