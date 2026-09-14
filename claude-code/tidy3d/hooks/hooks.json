@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project \"${CLAUDE_PLUGIN_ROOT}/hooks/tidy3d-tool-guard.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

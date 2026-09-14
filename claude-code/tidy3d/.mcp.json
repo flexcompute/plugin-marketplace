@@ -6,7 +6,8 @@
         "--from",
         "tidy3d-mcp>=0.16.7",
         "tidy3d-mcp"
-      ]
+      ],
+      "alwaysLoad": true
     }
   }
 }

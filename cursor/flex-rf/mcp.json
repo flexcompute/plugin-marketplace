@@ -4,8 +4,10 @@
       "command": "uvx",
       "args": [
         "--from",
-        "tidy3d-mcp>=0.16.5",
-        "tidy3d-mcp"
+        "tidy3d-mcp>=0.16.11",
+        "tidy3d-mcp",
+        "--product",
+        "flex-rf"
       ]
     }
   }
