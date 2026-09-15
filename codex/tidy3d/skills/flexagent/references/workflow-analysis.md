@@ -20,8 +20,10 @@ Process sequentially. Solicit user feedback after each step.
 
 **Read the simulation code to understand what monitors were used and what data is available.**
 
+- Identify the exact saved `SimulationData` result or completed cloud job. When several results exist, do not guess which one the user intended.
+- If the sibling `editor-integration` skill is invocable and its results capabilities are advertised, follow its saved-result workflow for that exact result: open it, list the reported datasets, and select only the monitor and dataset relevant to the user's question. Keep the distinct results viewer ID. This editor view complements, rather than replaces, the local analysis and plots below.
 - Identify every monitor by name and type (FluxMonitor, ModeMonitor, FieldMonitor, etc.).
-- Apply the correct data-access pattern per monitor / simulation type. See `references/api-pitfalls.md` → "Monitor Data Access Patterns" and "MODE Results Access Patterns" — that is the canonical reference for which attributes return what dims. Wrong access is the most common analysis error.
+- Apply the correct data-access pattern per monitor / simulation type. See `references/api-pitfalls.md` → "Result Access Patterns" — that is the canonical reference for the common monitor and MODE nesting shapes. Wrong access is the most common analysis error.
 - Always use `.values` before NumPy operations on xarray DataArrays.
 - Use Docs Search only when a monitor type or result attribute isn't covered by the pitfall catalog.
 - Do not change any code in this step.
@@ -38,6 +40,7 @@ Process sequentially. Solicit user feedback after each step.
 
 - If accepted: write the analysis code, offer further analyses.
 - If rejected: ask for clarification.
+- If a durable report is requested or materially useful, keep its analysis reproducible from the exact saved result. When the sibling `editor-integration` skill and report capabilities are available, follow its report protocol to edit the `.qmd`, render its executable cells, and open the rendered artifact. Do not create a report for a routine plot.
 
 ---
 
@@ -45,7 +48,8 @@ Process sequentially. Solicit user feedback after each step.
 
 - Use `matplotlib.pyplot` — **not Plotly**.
 - Tidy3D's `.plot*()` methods use matplotlib internally — use them as-is.
-- `plt.show()` is fine; do **not** call `plt.savefig()`.
+- Use `plt.show()` in an interactive Python surface.
+- Show the focused figure in the available Python surface, or save it to a user-approved artifact path or temporary PNG for inspection when running headlessly. Close temporary figures after saving.
 - Colormaps:
   - `'inferno'` — magnitude/intensity plots
   - `'RdBu'` (centered at 0) — real/imaginary/phase plots

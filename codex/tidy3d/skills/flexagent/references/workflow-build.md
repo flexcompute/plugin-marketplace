@@ -27,7 +27,8 @@ The triage is internal — don't announce the chosen path to the user. If unsure
 3. Verify the API for the parameter you're touching via `tidy3d_search_flexcompute_docs` / `tidy3d_fetch_flexcompute_doc` (or by reading the installed Tidy3D source). Don't guess.
 4. Apply the edit only after the results-preservation path is settled. Describe what you changed in physics terms ("Waveguide width is now 500 nm — n_eff will drop by ~0.05 at 1550 nm").
 5. If the change affects geometry, regenerate the cross-section render and apply `protocols/geometry-inspection.md`.
-6. Suggest the next action (re-estimate cost, refresh analyses, etc.).
+6. If the sibling `editor-integration` skill is invocable and its validation and setup-open capabilities are advertised, follow its Source was built or changed workflow: validate the saved source after local inspection and open the exact setup artifact receipt returned for the intended simulation. This handoff does not replace the physics audit or cloud-consent gate.
+7. Suggest the next action (re-estimate cost, refresh analyses, etc.).
 
 Quick Modify does not need a blueprint, audit, or full phased build. Don't add ceremony where it's not needed.
 
@@ -41,9 +42,7 @@ Ask which file to work in:
 
 **Once a working file is chosen, production workflow code stays in it** — geometry, cost estimate, run, and analysis. Do not create sibling helper files (`_audit.py`, `_run_sim.py`, `_analyze.py`, …) for code the user is meant to keep. Audit and inspection code is agent scratch by default; see `protocols/post-build-audit.md` and `protocols/single-file-discipline.md`.
 
-Use the closest available editing capability for the file type: notebook-cell edits for notebooks, inline text edits for scripts.
-
-Ensure basic imports (`import tidy3d as td`, `import numpy as np`, `from tidy3d import web`) exist before writing simulation code. If an editor-local Python-environment detection tool is advertised, use it to inspect the active environment; otherwise do not try to auto-detect the environment.
+Edit notebook cells for notebooks and edit scripts inline. Ensure basic imports (`import tidy3d as td`, `import numpy as np`, `from tidy3d import web`) exist before writing simulation code. Use the user's active project environment for narrow local construction and validation probes; do not execute an entire script when it could start cloud work, overwrite files, or cause unrelated side effects.
 
 ---
 
@@ -53,12 +52,27 @@ Pick the path matching the user's input. Check in this order:
 
 | Path | Condition | First action |
 |---|---|---|
+| **Template** | The sibling `device-template-library` skill is invocable and has a supported template for the requested device | Invoke that skill; keep its template assets independent |
 | **Custom** | A standard photonic device is requested (ring resonator, MMI, grating coupler, etc.), no simulation exists yet, or the user wants a substantially novel structure | Docs search → structural blueprint → phased build |
-| **Import** | User provides a layout file (`.gds`, `.stl`) | Ask user to identify cells / layers; import via `gdstk` and `td.PolySlab.from_gds()` |
+| **Import** | User provides a layout file (`.gds`, `.stl`) | Inspect the format; follow the separate GDS or STL procedure |
 | **Script** | User uploaded a `.py` / `.ipynb` containing simulation code | Read the script; identify intent; offer to adapt or run as-is |
 | **Material Fit** | User uploaded a `.csv` / `.txt` with refractive-index / permittivity data | Inspect format; fit with `FastDispersionFitter`; report quality |
 
 If a reference image is in scope, apply `protocols/image-analysis.md` **before** picking the path — the topology extraction may change whether the build is a standard-device Custom path or a novel-geometry Custom path.
+
+---
+
+## Template Path
+
+Use this path only when `device-template-library` is actually invocable in the current session and supports the requested device.
+
+1. Invoke that skill, select the closest supported template, and inspect the selected template and intended parameter overrides.
+2. Present a structural blueprint derived from the template by following `protocols/structural-blueprint.md`. Stop for confirmation before adapting or copying template code.
+3. Build the complete simulation only through the sibling skill's documented workflow. Do not duplicate its assets into FlexAgent.
+4. Verify the resulting Tidy3D API against live docs and run `protocols/post-build-audit.md` against the confirmed blueprint.
+5. Continue at Step 6. Do not send a completed template through Step 5 or replace its geometry, sources, or monitors with phased-build placeholders.
+
+If the sibling skill is absent or has no matching template, continue through the Custom path without treating the absence as an error.
 
 ---
 
@@ -70,7 +84,9 @@ If a reference image is in scope, apply `protocols/image-analysis.md` **before**
 
 ---
 
-## Import Path (GDS / STL)
+## Import Path
+
+### GDS
 
 1. **Inspect the file.** For GDS, list cell names and layer / datatype pairs. Ask the user which cell and which layers to import.
 2. **Ask for missing parameters per layer.** Z-position (`z0`), extrusion thickness, material.
@@ -79,6 +95,15 @@ If a reference image is in scope, apply `protocols/image-analysis.md` **before**
 5. Wrap into `td.Structure(geometry=g, medium=material)` for each imported polygon.
 6. **Start Step 5 at Phase 1.** Use the imported geometry as Phase 1 of the Phased Incremental Build. Write only imported structures first; source, monitors, and settings come in later phases after the Phase 1 audit gate passes.
 7. **Propagation note.** When the user later changes import parameters (selected layer, thickness), the simulation must be re-built downstream — point this out so they don't expect automatic propagation.
+
+### STL
+
+1. **Inspect the file.** Confirm which solid to import, the STL length unit, coordinate orientation, and expected physical bounding box. STL does not have GDS cells, layers, or datatypes.
+2. **Ask for missing parameters.** Material, unit-to-micrometer scale, and any translation or rotation needed in the simulation frame.
+3. **Import blueprint.** Enumerate each selected solid, transformation, expected bounding box, and material assignment. Stop for confirmation.
+4. **Import.** Verify the installed `TriangleMesh.from_stl(...)` signature before writing the import. Apply the confirmed scale and transform explicitly.
+5. **Audit before proceeding.** Inspect bounding boxes and cross-sections, then apply `protocols/post-build-audit.md`.
+6. **Start Step 5 at Phase 1.** Add sources, monitors, and solver settings only after the imported mesh passes the geometry gate.
 
 ---
 
@@ -107,7 +132,7 @@ Before applying Phase 1 defaults, identify the Tidy3D simulation type. Do not ap
 | **FDTD** | `td.Simulation`, optical source (`PlaneWave`, `ModeSource`, `GaussianBeam`, etc.), wavelength / frequency grid, monitors, PML defaults, `td.RunTimeSpec` or positive `run_time` | `run_time="auto"` / `None`; cost-incurring run calls before the gate |
 | **HEAT / CHARGE** | `td.HeatChargeSimulation`, heat / charge sources, temperature / carrier / electrical monitors, thermal or electrical boundary specs, material models appropriate to TCAD | FDTD optical sources, PML assumptions, optical `run_time` |
 | **EME** | `td.EMESimulation`, ports, EME cells / `EMEGrid`, mode specs, propagation settings | FDTD optical source placeholders, FDTD monitors, FDTD `run_time` |
-| **MODE** | Local mode-solver workflow when the user wants modal properties; cloud `ModeSimulation` only when the task specifically needs that surface | FDTD source placeholders, FDTD monitors, FDTD `run_time` |
+| **MODE** | Local `ModeSolver.solve()` when that is the verified installed surface; cloud mode work through a docs-backed simulation object and `web.Job` | FDTD source placeholders, FDTD monitors, FDTD `run_time`; invented `ModeSolver.run()` calls |
 | **SMATRIX** | Docs-backed S-matrix / component-modeler setup, ports / terminals, sweep settings, and result extraction matched to the selected API | FDTD source placeholders, FDTD monitors, FDTD `run_time` unless the docs-backed workflow explicitly uses an FDTD-backed setup |
 
 When a non-FDTD type is requested and the exact class or argument names are unclear, verify against live docs or installed source before writing code. State the chosen simulation type in the blueprint so the audit uses the right inventory.
@@ -159,7 +184,7 @@ Never use `run_time="auto"` or `run_time=None` for FDTD — invalid. A hardcoded
 
 ## Step 6 — Inspect, Estimate, Run, Analyze
 
-1. **Inspect — automated scratch and advertised editor tools.** Reuse the latest passing Phase 1 `protocols/post-build-audit.md` result when the geometry is unchanged. Run `post-build-audit.md` here only if the current geometry has not been audited yet or changed after Phase 1. Don't write inspection code into the user's file and don't ask the user to run audit code on your behalf. For FDTD waveguides / substrates, verify PML extension (see `protocols/geometry-inspection.md` step 3). If an editor-local simulation-validation tool is advertised, use it after the scratch audit and resolve every warning or error it reports. Use a viewer-opening tool only when it is also advertised and the user asks to see the setup; a partial bridge does not imply either capability.
+1. **Inspect and validate locally.** Reuse the latest passing Phase 1 `protocols/post-build-audit.md` result when the geometry is unchanged. Run `post-build-audit.md` here only if the current geometry has not been audited yet or changed after Phase 1. Don't write inspection code into the user's file and don't ask the user to run audit code on your behalf. Construct and validate the exact saved simulation in the selected project environment, then inspect informative `sim.plot(...)` cross-sections. For FDTD waveguides / substrates, verify PML extension (see `protocols/geometry-inspection.md` step 3). In a headless environment, use the Agg backend and inspect temporary PNGs; do not use `sim.plot_3d()` as a headless image-export substitute. After that local physics inspection, if the sibling `editor-integration` skill is invocable and its validation and setup-open capabilities are advertised, follow its Source was built or changed workflow to validate the saved source and open the exact returned setup receipt. The editor handoff does not replace the local audit or authorize cloud work.
 2. **Estimate + run.** Route through `protocols/simulation-execution.md`. Never call `job.run()` without explicit consent at the cost gate.
 3. **Analyze.** Once results return, route through `workflow-analysis.md`. See `references/recommended-analyses.md` for type-specific analysis suggestions.
 

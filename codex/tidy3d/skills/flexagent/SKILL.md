@@ -16,7 +16,7 @@ Identify the mode that best fits the user's request, then **read the correspondi
 | **Build** | User wants to create a new simulation OR modify an existing one (triage decides Quick Modify vs Full Build) | `references/workflow-build.md` |
 | **Analysis** | User wants to retrieve, plot, or interpret simulation results | `references/workflow-analysis.md` |
 
-Read the workflow file before taking any action. It contains the step-by-step process, decision tree (Build mode has 4 paths: Custom / Import / Script / Material Fit), and references to the protocol files.
+Read the workflow file before taking any action. It contains the step-by-step process, decision tree (Build mode has 5 paths: Template / Custom / Import / Script / Material Fit), and references to the protocol files.
 
 # Scope Deferrals
 
@@ -26,9 +26,10 @@ Read the workflow file before taking any action. It contains the step-by-step pr
 
 # Resources
 
-- **Device builds**: this public skill package does not include bundled device templates. Build common devices through the docs-backed Custom path unless a separate local template catalog is installed.
+- **Device builds**: this skill does not bundle device templates. If the sibling `device-template-library` skill is actually invocable in the current session, use it for supported starting points and keep its assets in that skill. Otherwise use the docs-backed Custom path.
+- **Editor integration**: if the sibling `editor-integration` skill is invocable and the relevant editor tools are advertised, use it after a build or modification to validate the saved source and open the exact setup receipt; before diagnosing a setup already visible in the editor; when inspecting an exact saved result; or when a durable report is requested or materially useful. Keep physics validation, local plots, result interpretation, and cloud gates in FlexAgent.
 - **Cross-cutting protocols** in `references/protocols/`:
-  - `references/protocols/simulation-execution.md` — cost-estimate / consent / run gate (mandatory before any `job.run()`).
+  - `references/protocols/simulation-execution.md` — cost-estimate / consent / run gate for every cloud step.
   - `references/protocols/vgpu-submission.md` — Reserved / Time-Shared vGPU license types, GUI + Python submission, and the `vgpu_allocation` / `priority` / `pay_type` knobs. **Consult only when the user explicitly mentions vGPU, Reserved vGPU, Time-Shared vGPU, or GPU-Hours** — generic cloud submissions stay on `references/protocols/simulation-execution.md`.
   - `references/protocols/single-file-discipline.md` — production workflow code stays in the user's chosen file (script or notebook); audit scratch stays ephemeral.
   - `references/protocols/structural-blueprint.md` — enumerate planned structures before coding.
@@ -64,7 +65,7 @@ These apply in every mode.
 
 ## Rule Priority
 
-USER QUERIES > live docs or introspection > THIS SKILL > other sources.
+USER INTENT > live docs or introspection > THIS SKILL > other sources. User intent does not override the Non-Negotiables, cloud-consent gate, destructive-action confirmation, or tool-owned safety checks.
 
 If live documentation or package introspection for the installed Tidy3D version disagrees with anything in this skill, trust the live source. Observe periodically whether you are still following these rules.
 
@@ -76,20 +77,18 @@ Available tools can include:
 - **Docs search** (e.g., `tidy3d_search_flexcompute_docs`) — batch queries. Always verify APIs before first use or when upgrading.
 - **Doc fetch** (e.g., `tidy3d_fetch_flexcompute_doc`) — retrieve full runnable example code by URL.
 
-### Optional editor tools
+## Local Python Environment
 
-Editor-local tools are session-dependent. Treat the current tool list as authoritative:
-
-- If no editor-local tools are listed, continue with docs, code, and cloud workflows. If the user asks for an unavailable editor action, explain that the editor integration is not available in this session; do not install, launch, bootstrap, or reconfigure the editor or extension.
-- If only a subset is listed, use only those environment, validation, viewer, capture, or report tools; do not infer missing capabilities or substitute an unavailable tool.
-- The presence of editor-local tools never relaxes consent or safety gates. Cloud runs still require the cost estimate and explicit consent in `references/protocols/simulation-execution.md`; overwrites and destructive or risky actions still require confirmation; editor-owned pickers and confirmations remain user decisions.
+Before executing saved Tidy3D source, or agent scratch derived from it, with a local command runner, call `detect_python(resource=<saved source>)` when that tool is advertised and use the returned `pythonExec`. The saved source selects the environment even when the scratch file lives elsewhere. If detection fails or returns no selected interpreter, diagnose the failure and ask the user to select an interpreter or explicitly choose an alternative project environment; never silently fall back to the shell's Python. When `detect_python` is absent, identify and verify the active project environment before executing. Viewer-only actions do not require interpreter detection, and `validate_simulation` already uses the selected editor environment.
 
 ## Non-Negotiables
 
-- **Never run simulations without explicit user consent.** Always estimate cost first via `references/protocols/simulation-execution.md`.
+- **Never run cloud simulations without explicit user consent.** Always estimate the exact next cloud step first via `references/protocols/simulation-execution.md`.
 - **Never start an autonomous / inverse-design workflow unless the Scope Deferrals section applies.** Default to Build for new-simulation requests that do not explicitly invoke those workflows.
 - **Never rely on training data for API signatures.** Verify via docs search or by reading the installed Tidy3D source.
 - **Always read code before modifying.** Never overwrite changes you haven't seen.
+- **Validate constructed simulations locally before cloud work.** Use the selected environment and installed Tidy3D version to construct and validate the exact saved simulation without triggering unrelated script side effects. Errors and explicit tool refusals block progress. Inspect and classify every warning against the installed-version behavior: resolve warnings that affect simulation validity, physics, API compatibility, or submission safety, plus any warning that cannot be classified confidently, before estimating or submitting. A verified advisory or otherwise nonblocking warning may proceed when it is explained to the user. An aggregate `ok=false` can include warnings and is not by itself proof of a cloud blocker, but never bypass a tool that explicitly refuses the operation.
+- **Inspect the actual physics, not only the API.** For geometry work, render and examine informative Tidy3D cross-sections. For completed results, render and inspect the most informative Tidy3D / matplotlib plot. Object construction or schema validation alone is not evidence that the setup or result is physically correct.
 - **Keep production code in the user's chosen file.** No sibling helper scripts (`_audit.py`, `_run.py`, `_analyze.py`, …) for code the user is meant to keep. Notebook tasks get notebook cells; script tasks get inline edits. See `references/protocols/single-file-discipline.md`.
 - **Never overwrite a previous simulation's results without consent.** Route through `references/protocols/modify-existing-results.md`.
 - **Never hallucinate dimensions from images.** Ask if a value isn't clearly readable.
@@ -97,7 +96,7 @@ Editor-local tools are session-dependent. Treat the current tool list as authori
 
 ## Critical API Pitfalls
 
-Consult `references/api-pitfalls.md` before every code-generation task. The catalog lists patterns that cause silent errors or wrong results. Entries are version-annotated where behaviour varies by release — verify the claim against the installed Tidy3D version before applying any correction.
+Consult `references/api-pitfalls.md` before every code-generation task. The catalog lists patterns that cause silent errors or wrong results. Where behavior varies by release, verify the claim against the installed Tidy3D version before applying any correction.
 
 ## Physics Units
 

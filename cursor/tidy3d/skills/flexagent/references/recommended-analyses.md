@@ -5,10 +5,10 @@
 | Monitor type | Recommended analyses |
 |---|---|
 | FluxMonitor | Transmission/reflection spectrum, insertion loss (dB), 3 dB bandwidth, extinction ratio |
-| FieldMonitor | Field profile heatmap (\|E\|, \|H\|, Poynting vector), cross-section field cuts, mode confinement. Prefer `sim_data.plot_field(name, "Ey", val="abs")` (built-in, handles axes / colormap) over manual `imshow`. v2.11+ adds `SurfaceFieldMonitor` / `SurfaceFieldTimeMonitor` for fields tangential to PEC surfaces — useful for plasmonic / metallic structures. |
-| ModeMonitor | Mode-resolved transmission per mode index, coupling efficiency, effective index. For fiber-coupling and Gaussian-port problems, v2.11+ adds `GaussianOverlapMonitor` / `AstigmaticGaussianOverlapMonitor` which project the field onto a target Gaussian profile directly. |
+| FieldMonitor | Field profile heatmap (\|E\|, \|H\|, Poynting vector), cross-section field cuts, mode confinement. Prefer the installed `plot_field` helper when it matches the data. Check current docs for surface-field monitors when fields tangential to PEC surfaces matter. |
+| ModeMonitor | Mode-resolved transmission per mode index, coupling efficiency, effective index. Check current docs for Gaussian-overlap monitors in fiber-coupling and Gaussian-port problems. |
 | DiffractionMonitor | Diffraction efficiency by order, zeroth-order transmission, angular distribution |
-| FieldProjectionAngleMonitor | Far-field radiation pattern, directivity, beam profile. The `DirectivityMonitor` symmetry handling was fixed in v2.11 — drop any prior workarounds. |
+| FieldProjectionAngleMonitor | Far-field radiation pattern, directivity, beam profile. Verify any legacy symmetry workaround against the installed version before keeping or removing it. |
 
 ## MODE
 
@@ -24,7 +24,7 @@
 - Insertion loss: `−10·log10(|S21|²)` dB
 - Port mode profiles
 - Length sweep convergence
-- v2.11 raised default `EMEModeSpec.interp_spec.num_points` from 3 to 5 for sharper frequency interpolation; v2.11.1 added a local-propagation API (`EMESimulation.propagate`, `compute_overlaps`, `propagate_from_overlaps`) — for iterative parameter sweeps that reuse the same modal basis, compute overlaps once and reuse them across sweep points rather than re-running the full pipeline each iteration.
+- When the installed API exposes local EME propagation and overlap reuse, consider it for iterative parameter sweeps that share a modal basis. Verify the exact methods before generating code.
 
 ## SMATRIX
 

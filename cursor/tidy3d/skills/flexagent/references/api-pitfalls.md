@@ -1,101 +1,76 @@
 # Tidy3D API Pitfall Catalog
 
-> **Version caveat:** these patterns were verified against Tidy3D **v2.11.x** (released 2026-04-06 through 2026-05-03). Before applying any correction, confirm the behaviour against the installed version using the available docs-search. If the live source disagrees with an entry here, trust the live source.
+> **Live-version rule:** determine the installed Tidy3D version and verify any constructor, method, or migration claim against installed source or maintained docs. This catalog records recurring failure patterns, not a frozen release contract.
 
-## v2.11 Breaking Changes
+## Common API Pitfalls
 
-The following changes shipped in v2.11.0 and apply to any code targeting v2.11+. If user code was written for an older Tidy3D, surface these before "fixing" symptoms.
+| Pitfall | Safer response |
+|---|---|
+| `run_time="auto"` or `run_time=None` | Verify the active `Simulation` signature. For FDTD, use a positive duration or the documented `RunTimeSpec` form. |
+| Treating `ModeSortSpec.sort_key` as required | Current maintained docs provide a default such as `"n_eff"`; inspect the installed signature before adding it. |
+| Treating `ModeSpec(filter_pol=...)` as invalid | Some supported versions still accept it but mark it deprecated. Report the deprecation, verify the installed migration path, and do not present it as the cause of a validation error without evidence. |
+| `Box.from_bounds` with `td.inf` | Infinity support is version-dependent; verify before modifying working code. |
+| `PolySlab(center=...)` | Position is defined by 2D `vertices` and `slab_bounds`, not a `center` argument. |
+| Assuming a plotting signature | Inspect the installed `plot_3d` or `plot_field` signature before passing output paths, colormaps, or other options. For headless setup images, use 2D `sim.plot(...)` plus matplotlib saving. |
+| `web.estimate_cost(simulation)` | Estimate an uploaded task ID or use the documented `Job.estimate_cost()` / `Batch.estimate_cost()` surface. |
+| A cloud `ModeSolver.run()` call | Submit an accepted mode-solver object through `web.Job(simulation=..., ...)` and follow the execution gate. |
+| Guessing `web.run_async` arguments | Verify its collection-oriented live signature; do not copy the single-`web.run` call shape. |
+| `np.max(xarray_data)` | Convert to `.values` before NumPy operations unless an xarray-aware operation is intended. |
+| `sim_data.y.values` | Select a monitor and field dataset before accessing coordinates. |
+| Assuming plotting methods live on result data | Mode plotting APIs can live on the solver or data object depending on the installed surface; verify before changing code. |
+| Unverified gdstk, trimesh, or optimization APIs | Inspect the installed dependency and the Tidy3D import docs before writing the call. |
 
-- **`ModeSortSpec.sort_key` is now required.** Default is `"n_eff"`. `ModeSortSpec()` without a `sort_key` raises a validation error. `sort_order` becomes optional with a smart default: ascending when a `sort_reference` is provided (closest first), descending for `n_eff` and polarization fractions, ascending for `k_eff` and `mode_area`.
-- **Gaussian-beam `waist_distance` semantics changed for `direction="-"`.** A positive `waist_distance` (or `waist_distances`) now always places the waist behind the source/monitor plane on the negative normal axis, independent of `direction`. Pre-v2.11 simulations with backward-propagating `GaussianBeam` / `AstigmaticGaussianBeam` and non-zero waist distance need the sign flipped on `waist_distance` to reproduce the same beam.
-- **`web.Batch(simulations={...})` requires string task-name keys.** Numeric keys (e.g. `{0: sim, 1: sim2}`) are no longer auto-converted and now raise. Use string keys (`"0"`, `"1"`, or the documented `"{param}_{value}"` convention).
-- **1-D lumped elements are forbidden.** A `LumpedElement` with zero lateral extent now raises a validation error. Use a small finite extent (e.g. `1e-6`) on at least one transverse axis.
+## Result Access Patterns
 
-## Tidy3D API Pitfalls
-
-| Pitfall                                 | Fix                                                                                                                                                             |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `run_time="auto"` or `run_time=None`    | Use `td.RunTimeSpec(quality_factor=Q)` (preferred) or a positive float in seconds                                                                               |
-| `ModeSpec(filter_pol=...)`              | Use `ModeSpec(sort_spec=td.ModeSortSpec(sort_key=...))`. The `filter_pol` API is gone in v2.11; `sort_key` is the supported replacement (default `"n_eff"`).    |
-| `Box.from_bounds` with `td.inf`         | Infinity support for bounds varies by version — verify before modifying user code.                                                                              |
-| `PolySlab` with `center=...`            | `PolySlab` has no `center` parameter — position is set via `vertices` (2D polygon) + `slab_bounds` (z extents)                                                  |
-| `plot_3d(...)` customization            | `plot_3d` returns nothing and accepts no parameters                                                                                                             |
-| `plot_field(..., cmap=...)`             | `plot_field` does not accept a colormap argument                                                                                                                |
-| `web.estimate_cost(simulation)`         | `web.estimate_cost()` requires a `task_id`: `web.estimate_cost(job.task_id)`                                                                                    |
-| `np.max(xarray_data)`                   | Always convert first: `data.values` before numpy operations                                                                                                     |
-| `sim_data.y.values`                     | Coordinate access requires selecting a dataset first: `sim_data["monitor"].Ey.y.values`                                                                         |
-| `ModeSolverData.plot_field()`           | In some versions, plotting methods live on the solver object (`ModeSolver`) rather than the data object — verify before modifying user code.                    |
-| Unverified gdstk/trimesh/cma APIs | Always verify versions and usage with Docs Search                                                                                                               |
-| Unsure about ANY constructor parameter  | Search docs (`tidy3d_search_flexcompute_docs`) before generating the call. Never guess parameter names or value ranges — wrong guesses fail at validation time. |
-
-## run_time Quality Factor Guide
-
-Use `td.RunTimeSpec(quality_factor=Q)`:
-
-| Device type                                          | quality_factor |
-| ---------------------------------------------------- | -------------- |
-| Non-resonant (waveguides, couplers, splitters)       | 1              |
-| Low-Q resonant (Bragg gratings, Fabry-Pérot)         | 10             |
-| High-Q resonant (ring resonators, photonic crystals) | 200+           |
-
-## MODE Results Access Patterns
-
-`ModeSimulation` produces `ModeSimulationData`. Access mode data via `.modes`:
+Verify monitor names against `sim_data.monitor_data.keys()` before indexing.
 
 ```python
-# Correct
-modes = mode_sim_data.modes          # ModeSolverData
-n_eff = mode_sim_data.modes.n_eff    # DataArray(mode_index, f)
-ex    = mode_sim_data.modes.Ex       # DataArray
+# ModeSimulationData
+modes = mode_sim_data.modes
+n_eff = mode_sim_data.modes.n_eff
 
-# Wrong — do NOT do this
-n_eff = mode_sim_data.n_eff          # AttributeError
+# ModeMonitor
+amps = sim_data["mode_mon"].amps
+n_eff = sim_data["mode_mon"].n_eff
+
+# FluxMonitor
+flux = sim_data["flux_mon"].flux
+
+# FieldMonitor
+ex = sim_data["field_mon"].Ex
 ```
 
-## Monitor Data Access Patterns
-
-```python
-# ModeMonitor → ModeSolverData
-amps  = sim_data["mode_mon"].amps    # DataArray (mode_index, f, direction)
-n_eff = sim_data["mode_mon"].n_eff   # DataArray (mode_index, f)
-
-# FluxMonitor → FluxData
-flux = sim_data["flux_mon"].flux     # DataArray (f,)
-
-# FieldMonitor → FieldData
-ex = sim_data["field_mon"].Ex        # DataArray (x, y, z, f)
-
-# ModeSimulation
-modes = mode_sim_data.modes          # ModeSolverData
-n_eff = mode_sim_data.modes.n_eff    # DO NOT use mode_sim_data.n_eff
-```
+Do not assume `mode_sim_data.n_eff` exists when the documented value is nested under `.modes`.
 
 ## Geometry and Setup Pitfalls
 
-For physics-side geometry rules (PML extension, structure-to-PML spacing, source / monitor placement inside the domain, waveguide port sizing, gaps between waveguide sections), see `references/geometry-construction.md` → "Geometry Guardrails". That is the canonical home — don't restate the same rules in two places.
+The physics-side guardrails live in `geometry-construction.md`. The recurring API and data issues are:
 
-The items below are **API-surface** pitfalls specific to import, alignment, and units that aren't captured by the physics guardrails:
-
-- **Units / scale mismatches** — Tidy3D uses micrometers for length, Hz for frequency. Mixing nm with µm, or wavelengths with frequencies, is a frequent silent error.
-- **Polygon / trimesh orientation or scale errors after import** — GDS / STL files may use a different coordinate frame or unit; verify the bounding box after `from_gds` / `from_stl` matches expected dimensions.
-- **Mode / source / monitor misalignment** — polarization, target `n_eff`, and injection-frequency band must agree across the source and any mode-resolving monitor at the matching port.
-- **Waveguide port placement / sizing drifting after geometry edits** — when geometry parameters change (width, position), source / monitor positions and sizes don't auto-update. Re-derive them from the updated geometry.
-- **PML thickness not per documentation recommendations** — Tidy3D's defaults are usually right; only override after checking the docs for your device class.
+- Tidy3D lengths are micrometers and frequencies are hertz. Confirm external GDS, STL, and tabular units before conversion.
+- Inspect imported polygon or mesh bounding boxes before constructing the simulation.
+- Recompute source and monitor positions after geometry changes; they do not follow a moved waveguide automatically.
+- Keep mode source, monitor, polarization, target effective index, and frequency band mutually consistent.
+- Prefer documented boundary defaults. Override PML or other boundaries only with device-specific evidence.
 
 ## Batch and Analysis Pitfalls
 
-- Batch task names must be **strings** in v2.11+ (`Batch(simulations={"0": sim, "1": sim2})` not `{0: sim, 1: sim2}`). The underscore convention (`"width_0.4"` not `"width=0.4"`) still applies and is a good default. See `protocols/parameter-sweeps.md`.
-- Always verify monitor names against actual simulation data to avoid `KeyError`
-- Use `matplotlib.pyplot` for all plots — NOT Plotly
+- Use stable string task names in batch mappings and verify the installed `Batch` signature.
+- Report aggregate and per-task cost estimates.
+- Use matplotlib for custom plots because Tidy3D's plotting surfaces are matplotlib-based.
+- Convert xarray data intentionally and preserve coordinates until labels and selections are complete.
 
 ## Parameter Consistency
 
-The `params` list defines the function signature. The code body MUST use exactly the same variable names as declared in `params`. If `params` declares `wg_height`, the body must use `wg_height` — not `height`, not `h`.
+The parameter list, function signature, and implementation must use the same names. If the public input is `wg_height`, do not silently consume a different variable such as `height`.
 
-## Newer API Tips (v2.11)
+## Capability Leads
 
-Surfaces from the v2.11 release that the agent should reach for when applicable. These are not pitfalls — they're capabilities that didn't exist or weren't recommended earlier:
+These APIs are useful leads, but verify availability and signatures before using them:
 
-- **Broadband mode injection via `pole_residue`.** `ModeSource` and `GaussianBeam` accept `broadband_method="pole_residue"` (vector-fitting with auxiliary differential equations) as an alternative to the default Chebyshev interpolation. Useful when Chebyshev interpolation oscillates over a wide frequency span or when the underlying mode has strong dispersion.
-- **`DirectivityMonitor` symmetry fix.** Far-field results from `DirectivityMonitor` with `symmetry` were broken before v2.11. If the user has a workaround for this in older code, drop it on upgrade.
-- **`td.PolySlab(bulges=...)`.** Arc-edged 2D polygon cross-sections via the standard bulge convention (`bulge = tan(theta/4)`). Use this instead of approximating curved edges by very high-vertex polygons. See `references/geometry-construction.md` ("Bulk replication" subsection neighbouring it has more on `GeometryArray`).
+- `GeometryArray` or geometry `.array(...)` for repeated features;
+- `PolySlab(bulges=...)` for arc-edged polygons;
+- `GaussianOverlapMonitor` for Gaussian-mode coupling;
+- `broadband_method="pole_residue"` for broadband mode injection;
+- local EME propagation helpers when a sweep can reuse modal overlaps.
+
+Do not attach a release number to one of these capabilities unless the user's compatibility question requires it and the current changelog confirms it.

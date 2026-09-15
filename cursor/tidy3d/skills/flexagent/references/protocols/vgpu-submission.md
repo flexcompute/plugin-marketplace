@@ -18,13 +18,7 @@ This protocol covers the two license types, the GUI submission flow, the Python 
 
 Both types share the same submission controls and dashboard; Time-Shared adds a daily-budget dashboard with cards for Daily Total GPU-Hours, Queue, Reset Timer, and vGPU Usage.
 
-Solver caveats (v2.11.x):
-
-- **FDTD** — fully integrated. Runs on vGPU, consumes Time-Shared daily allowance, GUI shows GPU-Hours estimate.
-- **Mode / EME** — run on vGPU but **do not yet subtract** from the Time-Shared daily allowance (planned to change). No GPU-Hours estimate in the GUI.
-- **Heat** — runs on vGPU, consumes Time-Shared allowance, but no GPU-Hours estimate yet (placeholder `--- GPU-Hrs`).
-
-Do not promise Time-Shared customers that Mode / EME stay free of the daily quota — that's a current gap, not a guarantee.
+Solver eligibility, quota accounting, allocation tiers, and GUI estimates can change independently of the Python package. Verify them in the current vGPU documentation or the user's Virtual GPU Scheduler before making a solver-specific promise. Never infer current Mode, EME, or Heat quota behavior from a historical client version.
 
 ## 2. GUI submission (Tidy3D Workbench)
 
@@ -32,7 +26,7 @@ When a user describes the GUI flow or asks "how do I run this from the website",
 
 1. **Validate.** In the Workbench, click **Check Simulation**. After validation the toolbar shows a green **▶ Run Simulation With vGPU** button (or *With FlexCredits* if the user has no vGPU license) plus a **Simulation Info** chip linking to the estimate breakdown.
 2. **Open the Run popover** (the small ▾ dropdown on the green button). Two pay-type options:
-   - **vGPU** (default for vGPU customers) — set `Priority` (1-10, default 5) and `GPU Allocation` (`Auto` or one of `2, 4, 8, 12, 16, 20, 24, 32, 64`, capped at the license tier). For Time-Shared, the popover also shows **Estimated GPU-Hours**.
+   - **vGPU** (default for vGPU customers) — set `Priority` (1-10, default 5) and `GPU Allocation` (`Auto` or an allocation accepted by the current client; verified client releases use `1, 2, 4, 8`, capped at the license tier). For Time-Shared, the popover also shows **Estimated GPU-Hours**.
    - **FlexCredits** — shows estimated FlexCredits cost, bypasses the vGPU queue / daily allowance for this single run.
 3. **Memory rules.** If estimated GPU memory exceeds `80 GB × N` for the selected allocation, the vGPU option is greyed out and an **Ignore Memory Limit** checkbox appears (re-enables with runtime-error warning, up to 2× the cap). Above 2×, vGPU is hard-blocked and only FlexCredits is available.
 4. **Daily-budget rule (Time-Shared only).** If a single simulation's estimated GPU-Hours exceed the license's total daily allowance, the vGPU option is blocked outright — even a fresh day's reset cannot cover it. FlexCredits is the only path.
@@ -40,7 +34,7 @@ When a user describes the GUI flow or asks "how do I run this from the website",
 
 ## 3. Python SDK submission
 
-The SDK exposes the same submission knobs via `web.run` / `web.run_async` / `Job` / `Batch`.
+The SDK exposes vGPU submission controls through documented web surfaces. Verify the installed signature separately for `web.run`, collection-oriented `web.run_async`, `Job`, and `Batch`; do not assume they take identical arguments.
 
 > **Gate first.** `web.run(...)`, `web.run_async(...)`, `Job.run(...)`, and `Batch.run(...)` start cloud compute. Treat the snippets below as post-consent call shapes. Before writing or executing an active run call, route through `protocols/simulation-execution.md` so the task is uploaded / estimated, the cost or GPU-Hour impact is reported, and the user explicitly consents.
 
@@ -66,7 +60,7 @@ sim_data = web.run(
     sim,
     task_name="my_simulation",
     priority=8,                 # vGPU queue priority, 1 (lowest) to 10 (highest); default 5
-    vgpu_allocation=4,          # one of 2, 4, 8, 12, 16, 20, 24, 32, 64 (capped at license tier)
+    vgpu_allocation=4,          # verify accepted values; current clients use 1, 2, 4, or 8
     ignore_memory_limit=False,  # set True to allow runs above the per-GPU memory cap (up to 2x)
 )
 ```
@@ -94,13 +88,13 @@ import tidy3d as td
 
 td.config.run.pay_type = "AUTO"          # or "FLEX_CREDIT"
 td.config.vgpu.priority = 5              # 1..10
-td.config.vgpu.vgpu_allocation = 4       # 2, 4, 8, 12, 16, 20, 24, 32, or 64
+td.config.vgpu.vgpu_allocation = 4       # verify accepted values; current clients use 1, 2, 4, or 8
 td.config.vgpu.ignore_memory_limit = False
 ```
 
 Per-call arguments override the config defaults.
 
-**Batch / parameter sweeps.** The same `priority` / `vgpu_allocation` / `ignore_memory_limit` arguments apply at the batch level — every simulation in the batch inherits them. On Time-Shared, if a batch's estimated total GPU-Hours exceeds today's remaining allowance, the overflow stays in `Queued` state and resumes automatically after the next 00:00 UTC reset.
+**Batch / parameter sweeps.** Verify the live `Batch.run(...)` and `Batch.start(...)` signatures. Supported clients accept `priority`, `vgpu_allocation`, and `ignore_memory_limit` at the call so the values are forwarded to every task; `ignore_memory_limit` is not a `Batch` constructor field. A lower-level `BatchTask.submit` limitation does not imply that the public `Batch` call rejects the option. On Time-Shared, check the current scheduler behavior when an estimate exceeds today's remaining allowance.
 
 ## 4. Decision rules for the agent
 
@@ -120,7 +114,7 @@ When generating cloud-submission code or answering "how do I run this":
 
 1. Generate the simulation and choose the intended `pay_type` / `priority` / `vgpu_allocation`.
 2. Upload or create a `Job` / `Batch` through the safe estimate path in `protocols/simulation-execution.md`; do not call an active run shorthand before the gate.
-3. Run `web.estimate_cost(job.task_id)` or the matching batch estimate and report the estimate (FlexCredits) plus, for Time-Shared, the estimated GPU-Hours when available.
+3. Run `job.estimate_cost()`, `web.estimate_cost(job.task_id)`, or the matching batch estimate according to the installed API. Report FlexCredits plus estimated GPU-Hours when available.
 4. Wait for explicit user consent before launching.
 5. On consent, write or execute the submission with the agreed `pay_type` / `priority` / `vgpu_allocation`.
 

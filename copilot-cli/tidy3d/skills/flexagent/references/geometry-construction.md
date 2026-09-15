@@ -21,8 +21,8 @@ Manual trigonometry on vertex arrays is the failure mode this section exists to 
 | Boolean combination (L, T, slot, rib) | `td.ClipOperation(operation="union"/"difference"/"intersection", ...)` on simple primitives, **or** `gdstk.boolean()` for 2D polygon-level ops + `PolySlab.from_gds()` | Rib WG = slab + ridge, slotted structures |
 | Ring / annulus | `gdstk` arcs + `td.PolySlab.from_gds()`, or two concentric `td.Cylinder` + `ClipOperation("difference")` | Ring resonator, circular slot |
 | Custom polygon (last resort) | `td.PolySlab(vertices=..., slab_bounds=..., axis=2)` with mandatory geometry-inspection check | Arbitrary cross-sections |
-| Polygon with arc edges | `td.PolySlab(vertices=..., bulges=..., slab_bounds=...)` using bulge = `tan(theta/4)` | Curved 2D cross-sections without RobustPath (v2.11+) |
-| Repeated unit cells / arrays | `td.GeometryArray(geometry=..., offsets=..., transforms=...)` or `geom.array(offsets=..., transforms=...)` | Metasurfaces, gratings, phased pillar arrays (v2.11+) |
+| Polygon with arc edges | `td.PolySlab(vertices=..., bulges=..., slab_bounds=...)` using bulge = `tan(theta/4)` | Curved 2D cross-sections without RobustPath; verify installed support |
+| Repeated unit cells / arrays | `td.GeometryArray(geometry=..., offsets=..., transforms=...)` or `geom.array(offsets=..., transforms=...)` | Metasurfaces, gratings, phased pillar arrays; verify installed support |
 | GDS file import | `td.PolySlab.from_gds(cell, ...)` | External layout |
 
 ---
@@ -41,7 +41,7 @@ For any path-like shape with curves (tapers, bends, arcs, waveguides), `gdstk.Ro
 
 ---
 
-## Bulk replication (v2.11+)
+## Bulk replication
 
 For N copies of a single base geometry (metasurface unit cells, periodic gratings, phased pillar arrays, hole rows in photonic crystals), prefer `td.GeometryArray` over both `td.GeometryGroup` of N copies and hand-written `for`-loops:
 
@@ -66,7 +66,7 @@ These rules prevent the two most common failures with free-form geometry: too fe
 ### Vertex density
 
 - **Curved segments**: minimum **50 vertices per curve** (arc, bend, taper profile). With `gdstk`, set `tolerance=1e-3` (µm) or smaller to achieve this.
-- **After `cell.get_polygons()`**: inspect `len(polys[0])`. If a polygon representing a curve has < 20 vertices, the tolerance is too coarse — reduce it and regenerate.
+- **After `cell.get_polygons()`**: inspect `len(polys[0].points)`. If a polygon representing a curve has < 20 vertices, the tolerance is too coarse — reduce it and regenerate.
 - **Straight segments**: no minimum, but avoid degenerate edges (zero-length segments, duplicate adjacent vertices).
 
 ### Mandatory sanity checks
@@ -114,7 +114,7 @@ path.segment((taper_length, 0), width=wg_width_out)
 cell.add(path)
 polys = cell.get_polygons()
 taper = td.Structure(
-    geometry=td.PolySlab(vertices=polys[0], axis=2, slab_bounds=(0, height)),
+    geometry=td.PolySlab(vertices=polys[0].points, axis=2, slab_bounds=(0, height)),
     medium=si,
 )
 ```
@@ -160,7 +160,7 @@ After every `cell.get_polygons()`:
 ```python
 polys = cell.get_polygons()
 assert len(polys) > 0, "No polygons returned — check path definition"
-if len(polys[0]) < 20:
+if len(polys[0].points) < 20:
     # Curve has too few vertices — reduce tolerance in RobustPath
     path = gdstk.RobustPath(..., tolerance=1e-4)  # smaller = more vertices
 ```

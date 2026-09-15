@@ -2,10 +2,11 @@
 
 > **Scope.** Applies to Learn / Debug / Build / Analysis.
 
-Before writing any simulation code for a custom build or imported layout, produce a **structural blueprint** in the conversation and get user confirmation. This catches the "single block instead of grating" class of failure that no API check would surface.
+Before adapting a template or writing simulation code for a custom build or imported layout, produce a **structural blueprint** in the conversation and get user confirmation. This catches the "single block instead of grating" class of failure that no API check would surface.
 
 ## When This Applies
 
+- **Template path** — mandatory after inspecting the selected template and intended parameter overrides, before adapting or copying its code.
 - **Custom path** — mandatory.
 - **Import path** — mandatory after file inspection and layer / cell selection, before generated import code.
 - **Any path with a reference image in scope** — mandatory. The blueprint verifies the structure count and topology before any code is generated.

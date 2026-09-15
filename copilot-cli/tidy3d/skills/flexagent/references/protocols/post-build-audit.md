@@ -14,17 +14,18 @@ Same scope as `protocols/structural-blueprint.md` — the Custom path, Import pa
 
    The audit render is **agent scratch** per `protocols/single-file-discipline.md` — the user doesn't need to keep the rendering code, they just need the verdict. Do not write the audit code into the user's notebook or script.
 
-   - **Create scratch code outside the user's project** (for example, a temporary file under `/tmp/` when local command execution is available) containing:
+   - **Create one private temporary directory outside the user's project** with the platform's safe temporary-directory mechanism (for example, `mktemp -d`) when local command execution is available. Put the scratch script and every audit image inside that exact directory. The script contains:
      - The geometry-building code (copy / replicate from what you just wrote into the user's file — usually a short block).
      - `import matplotlib; matplotlib.use("Agg")` (headless).
-     - `sim.plot(z=...)`, `sim.plot(y=...)`, `sim.plot(x=...)` for the relevant planes; save each via `plt.savefig("/tmp/audit_<plane>.png", dpi=120, bbox_inches="tight")`.
+     - `sim.plot(z=...)`, `sim.plot(y=...)`, `sim.plot(x=...)` for the relevant planes; save each figure to a unique path inside the temporary directory.
      - Print the container count and any repeated-feature counts needed by the blueprint. For `GeometryArray`, print the array length from `offsets` / `transforms` or an explicit variable used to build the array.
-   - **Execute** with the available local command runner. Capture stdout + stderr.
+   - **Select the interpreter before execution.** Follow the canonical saved-source rule in the root FlexAgent skill. When `detect_python` is advertised, pass the user's saved source as `resource` even though the scratch script is elsewhere, then use the returned `pythonExec` exactly. If detection is unavailable, identify and verify the active project interpreter first.
+   - **Execute** the scratch script with that exact interpreter through the available local command runner. Capture stdout + stderr.
    - **Inspect the generated PNGs** with the available image-viewing capability. Inspect all relevant planes.
-   - **Delete scratch code and generated PNGs** after inspection. They're audit artifacts, not user data.
+   - **Delete only that resolved temporary directory** after inspection. Never use a wildcard or a broad path for cleanup. These are audit artifacts, not user data.
    - **Report only the verdict to the user** in physics terms (*"verified 25 grating teeth at 0.63 µm pitch; layers stacked correctly at z = −2 µm and z = −10 µm"*). The user doesn't see the scratch code or the PNGs.
    - **If the user explicitly asks** to keep the audit code in the notebook / script (e.g., *"I want to re-render this later"*), then promote it from scratch to production using the available notebook or script editing capability. The default is scratch.
-   - **If execution fails** (`ModuleNotFoundError`, `tidy3d` missing, etc.) — report what's missing and stop. First diagnose (is the tidy3d env activated? `which python`, `python -c "import tidy3d"`). If genuinely unable to execute, surface as a setup blocker, not a user task.
+   - **If execution fails** (`ModuleNotFoundError`, `tidy3d` missing, etc.) — report what's missing and stop. When `detect_python` is advertised, diagnose against the saved source and verify that the returned `pythonExec` can import Tidy3D; do not retry with the shell's default Python. Without detection, diagnose the verified project interpreter directly (for example, `<pythonExec> -c "import tidy3d"`). If genuinely unable to execute, surface it as a setup blocker, not a user task.
 
 2. **Verify structural inventory.** Compare the generated code to the blueprint's expected inventory:
    - **Physical-feature inventory** — each repeated feature appears the expected number of times in the rendered geometry or in the construction data. For `GeometryArray`, count the intended physical copies from `offsets` / `transforms`; do not reject the build just because those copies live inside one `Structure`.
@@ -44,4 +45,4 @@ Same scope as `protocols/structural-blueprint.md` — the Custom path, Import pa
 
 ## Rule
 
-"Quick Build" means "build it correctly fast", not "skip verification." Even when the user picks a fast path, the audit is non-negotiable for any custom build, imported layout build, or image-referenced build.
+"Quick Build" means "build it correctly fast", not "skip verification." Even when the user picks a fast path, the audit is non-negotiable for any template-based build, custom build, imported layout build, or image-referenced build.

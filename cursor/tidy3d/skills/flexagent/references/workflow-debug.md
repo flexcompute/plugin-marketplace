@@ -10,12 +10,15 @@ Process sequentially. Solicit user feedback after each step. Maintain a change l
 
 ## Step 1: Code Analysis
 
-**Read the full code and all error output before doing anything else.**
+**Before forming a hypothesis or changing code, collect the full durable and visible evidence.**
 
+- Read the full code and all error output.
+- If the user refers to a setup currently visible in the editor, and the sibling `editor-integration` skill and setup-capture capability are available, capture that setup before diagnosis. Prefer the known applicable setup viewer ID; omit it only for the editor protocol's documented remembered-or-single-viewer route. Never use a setup capture or setup viewer ID for result data.
+- If the user refers to a setup or result, inspect the exact saved source or data and reproduce the relevant geometry or result view locally. Do not guess from an unseen surface. For a saved result, use the editor skill's distinct results workflow when its capabilities are advertised.
 - Cross-check every class and function against `references/api-pitfalls.md` — known pitfalls are the most common cause of errors.
 - Use Docs Search to verify API signatures for anything not covered in the pitfall catalog.
 - Identify all warnings, errors, and user-reported issues. Look for:
-  - Invalid constructor parameters (e.g., `filter_pol`, `run_time="auto"`)
+  - Invalid constructor parameters (for example, `run_time="auto"`). A deprecated parameter such as `filter_pol` is not automatically a runtime error; verify the installed version before proposing a migration.
   - Wrong data access patterns (e.g., `sim_data.n_eff` on `ModeSimulationData`)
   - Geometry guardrail violations (structures too close to PML, sources outside domain)
   - Unit mismatches
@@ -65,9 +68,9 @@ These are runtime symptoms of patterns already cataloged in `references/api-pitf
 
 | Symptom | Cataloged in `api-pitfalls.md` |
 |---|---|
-| `AttributeError` on result data | "Monitor Data Access Patterns" / "MODE Results Access Patterns" |
-| `ValidationError` on construction | `filter_pol`, `PolySlab` with `center=...`, `Box.from_bounds` with `td.inf` |
-| Wrong `n_eff` values from a `ModeSimulation` | "MODE Results Access Patterns" — must use `.modes.n_eff` |
+| `AttributeError` on result data | `api-pitfalls.md` → "Result Access Patterns" |
+| `ValidationError` on construction | `PolySlab` with `center=...`, version-dependent bounds, or another live-signature mismatch |
+| Wrong `n_eff` values from a `ModeSimulation` | `api-pitfalls.md` → "Result Access Patterns"; verify the documented `.modes.n_eff` nesting |
 | `KeyError` on monitor name | "Batch and Analysis Pitfalls" — verify monitor name against `sim_data.monitor_data.keys()` |
 
 ### Runtime physics symptoms — diagnose here
